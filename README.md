@@ -345,7 +345,7 @@ docs/index.html food table is in sync with data/foods.json (16 foods)
   ok    docs/index.html carries the same food table
 
 2. unit tests, including the controls that must make the checker fail
-Ran 71 tests in 9.941s
+Ran 71 tests in 9.887s
 
 OK
   ok    unit tests (71 tests)
@@ -402,7 +402,7 @@ INDEPENDENT CHECK PASSED: 483 checks, status 'solved'
   ok    the page runs, solves, and its plan passes the same independent checker
 
 8. secrets and absolute paths in tracked files
-scanned 36 tracked files as bytes: no credential-shaped strings, no absolute home paths
+scanned 37 tracked files as bytes: no credential-shaped strings, no absolute home paths
   ok    no credential-shaped strings and no absolute home paths
 
 9. the README
