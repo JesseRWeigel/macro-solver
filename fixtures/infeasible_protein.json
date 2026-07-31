@@ -1,0 +1,45 @@
+{
+  "_comment": "Known-infeasible on purpose. The pantry cannot reach this protein target under these frequency caps, and bounds.py proves it rather than the search giving up. Targets here are illustrative, not a recommendation.",
+  "pantry": [
+    "chicken_breast",
+    "salmon",
+    "egg",
+    "greek_yogurt",
+    "tofu",
+    "white_rice",
+    "broccoli",
+    "olive_oil",
+    "banana",
+    "spinach"
+  ],
+  "days": 7,
+  "meals_per_day": 3,
+  "max_foods_per_meal": 3,
+  "max_servings_per_food_in_meal": 2,
+  "targets": {
+    "protein_g": {
+      "target": 180,
+      "tol_abs": 5,
+      "mode": "min"
+    },
+    "kcal": {
+      "target": 1300,
+      "tol_pct": 10
+    }
+  },
+  "frequency_caps": {
+    "chicken_breast": 3,
+    "salmon": 2,
+    "egg": 4,
+    "greek_yogurt": 4,
+    "tofu": 3,
+    "white_rice": 7,
+    "broccoli": 7,
+    "olive_oil": 7,
+    "banana": 5,
+    "spinach": 7
+  },
+  "max_meal_repeats": 3,
+  "min_distinct_foods": 6,
+  "seed": 11
+}

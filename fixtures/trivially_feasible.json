@@ -1,0 +1,15 @@
+{
+  "_comment": "Wide open. Huge tolerances, no frequency caps, a small variety floor. Anything that reports this infeasible is broken.",
+  "pantry": ["chicken_breast", "white_rice", "broccoli", "olive_oil", "egg", "banana"],
+  "days": 3,
+  "meals_per_day": 2,
+  "max_foods_per_meal": 3,
+  "max_servings_per_food_in_meal": 2,
+  "targets": {
+    "kcal": {"target": 1200, "tol_pct": 60}
+  },
+  "frequency_caps": {},
+  "max_meal_repeats": 6,
+  "min_distinct_foods": 2,
+  "seed": 3
+}

@@ -1,0 +1,52 @@
+{
+  "_comment": "A week the pantry can clearly cover. Targets are illustrative numbers a user might type in, not a recommendation.",
+  "pantry": [
+    "chicken_breast",
+    "egg",
+    "white_rice",
+    "lentils",
+    "oats",
+    "broccoli",
+    "sweet_potato",
+    "olive_oil",
+    "almonds",
+    "greek_yogurt",
+    "salmon",
+    "black_beans",
+    "banana",
+    "tofu",
+    "spinach",
+    "cottage_cheese"
+  ],
+  "days": 7,
+  "meals_per_day": 3,
+  "max_foods_per_meal": 3,
+  "max_servings_per_food_in_meal": 2,
+  "targets": {
+    "kcal": {
+      "target": 2150,
+      "tol_pct": 5
+    },
+    "protein_g": {
+      "target": 150,
+      "tol_abs": 12
+    },
+    "carb_g": {
+      "target": 220,
+      "tol_abs": 30
+    },
+    "fat_g": {
+      "target": 70,
+      "tol_abs": 12
+    }
+  },
+  "frequency_caps": {
+    "chicken_breast": 5,
+    "salmon": 3,
+    "egg": 6,
+    "olive_oil": 7
+  },
+  "max_meal_repeats": 3,
+  "min_distinct_foods": 8,
+  "seed": 7
+}
