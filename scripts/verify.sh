@@ -132,7 +132,9 @@ else bad "the plan changed between processes: $A vs $B"; fi
 
 echo
 echo "7. the page, in a real browser"
-PW="../a11y-sweep/node_modules/playwright-core"
+# Overridable so a copied tree (see scripts/attack.sh) can still reach the
+# browser. Unset, it resolves next to this project as it does in the fleet.
+PW="${MACRO_SOLVER_PLAYWRIGHT:-../a11y-sweep/node_modules/playwright-core}"
 if [ ! -d "$PW" ]; then
   # A skipped browser check is "could not verify", never "verified".
   bad "playwright-core is not available at $PW, so the page was never loaded"

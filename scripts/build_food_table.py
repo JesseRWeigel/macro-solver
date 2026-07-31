@@ -191,7 +191,8 @@ def build(servings: dict) -> dict:
                     "fdc_id": int(fid),
                     "data_type": entry["data_type"],
                     "publication_date": entry["publication_date"],
-                    "url": dataset["food_detail_url_pattern"].format(fdc_id=fid),
+                    "url": dataset["record_url_pattern"].format(fdc_id=fid),
+                    "portal_url": dataset["portal_url_pattern"].format(fdc_id=fid),
                     "serving_from": "USDA food_portion row: "
                     + f"{spec['portion']} = {grams} g",
                 },

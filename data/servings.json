@@ -12,7 +12,9 @@
     "distribution": "FoodData_Central_sr_legacy_food_csv_2018-04.zip",
     "url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
     "zip_sha256": "b80817294b8850530aaedf2e515c02593b1824f763a0ff356e5c2081643e6fd0",
-    "food_detail_url_pattern": "https://fdc.nal.usda.gov/food-details/{fdc_id}/nutrients",
+    "record_url_pattern": "https://fdc.nal.usda.gov/portal-data/external/{fdc_id}",
+    "portal_url_pattern": "https://fdc.nal.usda.gov/food-details/{fdc_id}/nutrients",
+    "url_note": "record_url_pattern returns the food's record as JSON and answers 200. portal_url_pattern is the human-readable portal page; it renders the right food but its server answers 404 because the portal is a single-page app, so a link checker will flag it.",
     "license": "USDA FoodData Central data are in the public domain (see https://fdc.nal.usda.gov/)",
     "retrieved": "2026-07-31"
   },

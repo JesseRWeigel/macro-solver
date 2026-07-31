@@ -31,9 +31,9 @@ const ROOT = path.resolve(__dirname, "..");
 const PAGE = path.join(ROOT, "docs", "index.html");
 const TITLE = "macro-solver";
 
-const PW = path.resolve(
-  ROOT, "..", "a11y-sweep", "node_modules", "playwright-core"
-);
+const PW = process.env.MACRO_SOLVER_PLAYWRIGHT
+  ? path.resolve(process.env.MACRO_SOLVER_PLAYWRIGHT)
+  : path.resolve(ROOT, "..", "a11y-sweep", "node_modules", "playwright-core");
 const { chromium } = require(PW);
 
 let failures = 0;

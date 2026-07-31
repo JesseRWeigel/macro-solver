@@ -93,6 +93,8 @@ class TableMatchesTheUsdaRows(unittest.TestCase):
             self.assertTrue(src.get("fdc_id"))
             self.assertIn("fdc.nal.usda.gov", src["url"])
             self.assertIn(str(src["fdc_id"]), src["url"])
+            self.assertIn("fdc.nal.usda.gov", src["portal_url"])
+            self.assertIn(str(src["fdc_id"]), src["portal_url"])
             self.assertTrue(src.get("data_type"))
             self.assertTrue(src.get("publication_date"))
             self.assertEqual(src["database"], "USDA FoodData Central, SR Legacy")

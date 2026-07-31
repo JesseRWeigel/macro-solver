@@ -4,7 +4,9 @@
     "distribution": "FoodData_Central_sr_legacy_food_csv_2018-04.zip",
     "url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
     "zip_sha256": "b80817294b8850530aaedf2e515c02593b1824f763a0ff356e5c2081643e6fd0",
-    "food_detail_url_pattern": "https://fdc.nal.usda.gov/food-details/{fdc_id}/nutrients",
+    "record_url_pattern": "https://fdc.nal.usda.gov/portal-data/external/{fdc_id}",
+    "portal_url_pattern": "https://fdc.nal.usda.gov/food-details/{fdc_id}/nutrients",
+    "url_note": "record_url_pattern returns the food's record as JSON and answers 200. portal_url_pattern is the human-readable portal page; it renders the right food but its server answers 404 because the portal is a single-page app, so a link checker will flag it.",
     "license": "USDA FoodData Central data are in the public domain (see https://fdc.nal.usda.gov/)",
     "retrieved": "2026-07-31"
   },
@@ -45,7 +47,8 @@
         "fdc_id": 171477,
         "data_type": "sr_legacy_food",
         "publication_date": "2019-04-01",
-        "url": "https://fdc.nal.usda.gov/food-details/171477/nutrients",
+        "url": "https://fdc.nal.usda.gov/portal-data/external/171477",
+        "portal_url": "https://fdc.nal.usda.gov/food-details/171477/nutrients",
         "serving_from": "USDA food_portion row: 0.5 breast, bone and skin removed = 86.0 g"
       }
     },
@@ -77,7 +80,8 @@
         "fdc_id": 173424,
         "data_type": "sr_legacy_food",
         "publication_date": "2019-04-01",
-        "url": "https://fdc.nal.usda.gov/food-details/173424/nutrients",
+        "url": "https://fdc.nal.usda.gov/portal-data/external/173424",
+        "portal_url": "https://fdc.nal.usda.gov/food-details/173424/nutrients",
         "serving_from": "USDA food_portion row: 1 large = 50.0 g"
       }
     },
@@ -109,7 +113,8 @@
         "fdc_id": 168878,
         "data_type": "sr_legacy_food",
         "publication_date": "2019-04-01",
-        "url": "https://fdc.nal.usda.gov/food-details/168878/nutrients",
+        "url": "https://fdc.nal.usda.gov/portal-data/external/168878",
+        "portal_url": "https://fdc.nal.usda.gov/food-details/168878/nutrients",
         "serving_from": "USDA food_portion row: 1 cup = 158.0 g"
       }
     },
@@ -141,7 +146,8 @@
         "fdc_id": 172421,
         "data_type": "sr_legacy_food",
         "publication_date": "2019-04-01",
-        "url": "https://fdc.nal.usda.gov/food-details/172421/nutrients",
+        "url": "https://fdc.nal.usda.gov/portal-data/external/172421",
+        "portal_url": "https://fdc.nal.usda.gov/food-details/172421/nutrients",
         "serving_from": "USDA food_portion row: 1 cup = 198.0 g"
       }
     },
@@ -173,7 +179,8 @@
         "fdc_id": 173904,
         "data_type": "sr_legacy_food",
         "publication_date": "2019-04-01",
-        "url": "https://fdc.nal.usda.gov/food-details/173904/nutrients",
+        "url": "https://fdc.nal.usda.gov/portal-data/external/173904",
+        "portal_url": "https://fdc.nal.usda.gov/food-details/173904/nutrients",
         "serving_from": "USDA food_portion row: 1 cup = 81.0 g"
       }
     },
@@ -205,7 +212,8 @@
         "fdc_id": 169967,
         "data_type": "sr_legacy_food",
         "publication_date": "2019-04-01",
-        "url": "https://fdc.nal.usda.gov/food-details/169967/nutrients",
+        "url": "https://fdc.nal.usda.gov/portal-data/external/169967",
+        "portal_url": "https://fdc.nal.usda.gov/food-details/169967/nutrients",
         "serving_from": "USDA food_portion row: 0.5 cup, chopped = 78.0 g"
       }
     },
@@ -237,7 +245,8 @@
         "fdc_id": 168483,
         "data_type": "sr_legacy_food",
         "publication_date": "2019-04-01",
-        "url": "https://fdc.nal.usda.gov/food-details/168483/nutrients",
+        "url": "https://fdc.nal.usda.gov/portal-data/external/168483",
+        "portal_url": "https://fdc.nal.usda.gov/food-details/168483/nutrients",
         "serving_from": "USDA food_portion row: 1 cup = 200.0 g"
       }
     },
@@ -269,7 +278,8 @@
         "fdc_id": 171413,
         "data_type": "sr_legacy_food",
         "publication_date": "2019-04-01",
-        "url": "https://fdc.nal.usda.gov/food-details/171413/nutrients",
+        "url": "https://fdc.nal.usda.gov/portal-data/external/171413",
+        "portal_url": "https://fdc.nal.usda.gov/food-details/171413/nutrients",
         "serving_from": "USDA food_portion row: 1 tablespoon = 13.5 g"
       }
     },
@@ -301,7 +311,8 @@
         "fdc_id": 170567,
         "data_type": "sr_legacy_food",
         "publication_date": "2019-04-01",
-        "url": "https://fdc.nal.usda.gov/food-details/170567/nutrients",
+        "url": "https://fdc.nal.usda.gov/portal-data/external/170567",
+        "portal_url": "https://fdc.nal.usda.gov/food-details/170567/nutrients",
         "serving_from": "USDA food_portion row: 1 oz (23 whole kernels) = 28.35 g"
       }
     },
@@ -333,7 +344,8 @@
         "fdc_id": 170894,
         "data_type": "sr_legacy_food",
         "publication_date": "2019-04-01",
-        "url": "https://fdc.nal.usda.gov/food-details/170894/nutrients",
+        "url": "https://fdc.nal.usda.gov/portal-data/external/170894",
+        "portal_url": "https://fdc.nal.usda.gov/food-details/170894/nutrients",
         "serving_from": "USDA food_portion row: 1 container = 170.0 g"
       }
     },
@@ -365,7 +377,8 @@
         "fdc_id": 175168,
         "data_type": "sr_legacy_food",
         "publication_date": "2019-04-01",
-        "url": "https://fdc.nal.usda.gov/food-details/175168/nutrients",
+        "url": "https://fdc.nal.usda.gov/portal-data/external/175168",
+        "portal_url": "https://fdc.nal.usda.gov/food-details/175168/nutrients",
         "serving_from": "USDA food_portion row: 3 oz = 85.0 g"
       }
     },
@@ -397,7 +410,8 @@
         "fdc_id": 173735,
         "data_type": "sr_legacy_food",
         "publication_date": "2019-04-01",
-        "url": "https://fdc.nal.usda.gov/food-details/173735/nutrients",
+        "url": "https://fdc.nal.usda.gov/portal-data/external/173735",
+        "portal_url": "https://fdc.nal.usda.gov/food-details/173735/nutrients",
         "serving_from": "USDA food_portion row: 1 cup = 172.0 g"
       }
     },
@@ -429,7 +443,8 @@
         "fdc_id": 173944,
         "data_type": "sr_legacy_food",
         "publication_date": "2019-04-01",
-        "url": "https://fdc.nal.usda.gov/food-details/173944/nutrients",
+        "url": "https://fdc.nal.usda.gov/portal-data/external/173944",
+        "portal_url": "https://fdc.nal.usda.gov/food-details/173944/nutrients",
         "serving_from": "USDA food_portion row: 1 medium (7\" to 7-7/8\" long) = 118.0 g"
       }
     },
@@ -461,7 +476,8 @@
         "fdc_id": 172475,
         "data_type": "sr_legacy_food",
         "publication_date": "2019-04-01",
-        "url": "https://fdc.nal.usda.gov/food-details/172475/nutrients",
+        "url": "https://fdc.nal.usda.gov/portal-data/external/172475",
+        "portal_url": "https://fdc.nal.usda.gov/food-details/172475/nutrients",
         "serving_from": "USDA food_portion row: 0.5 cup = 126.0 g"
       }
     },
@@ -493,7 +509,8 @@
         "fdc_id": 168462,
         "data_type": "sr_legacy_food",
         "publication_date": "2019-04-01",
-        "url": "https://fdc.nal.usda.gov/food-details/168462/nutrients",
+        "url": "https://fdc.nal.usda.gov/portal-data/external/168462",
+        "portal_url": "https://fdc.nal.usda.gov/food-details/168462/nutrients",
         "serving_from": "USDA food_portion row: 1 cup = 30.0 g"
       }
     },
@@ -525,7 +542,8 @@
         "fdc_id": 173417,
         "data_type": "sr_legacy_food",
         "publication_date": "2019-04-01",
-        "url": "https://fdc.nal.usda.gov/food-details/173417/nutrients",
+        "url": "https://fdc.nal.usda.gov/portal-data/external/173417",
+        "portal_url": "https://fdc.nal.usda.gov/food-details/173417/nutrients",
         "serving_from": "USDA food_portion row: 4 oz = 113.0 g"
       }
     }

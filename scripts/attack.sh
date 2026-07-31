@@ -35,6 +35,13 @@ prepare() {
       commit -q -m sabotage
 }
 
+# Resolved once, so the sabotaged copy sitting in a temp directory can still run
+# the browser step. Without this the copy would fail on a missing browser and the
+# attack would prove less than it looks like it proves.
+if [ -d "$SRC/../a11y-sweep/node_modules/playwright-core" ]; then
+  export MACRO_SOLVER_PLAYWRIGHT="$(cd "$SRC/../a11y-sweep/node_modules/playwright-core" && pwd)"
+fi
+
 report() {
   local label="$1" dir="$2"
   echo
