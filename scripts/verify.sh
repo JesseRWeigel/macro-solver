@@ -134,10 +134,26 @@ echo
 echo "7. the page, in a real browser"
 # Overridable so a copied tree (see scripts/attack.sh) can still reach the
 # browser. Unset, it resolves next to this project as it does in the fleet.
-PW="${MACRO_SOLVER_PLAYWRIGHT:-../a11y-sweep/node_modules/playwright-core}"
+# Ordinary places first, with the sibling project last. Putting that sibling FIRST is the shape
+# that made six projects in this catalog pass verify in place and fail in every fresh clone.
+# PLAYWRIGHT_CORE is honoured as well as the project-specific name, because every other project
+# here uses that one and a reader should not have to guess which.
+PW=""
+for cand in "${MACRO_SOLVER_PLAYWRIGHT:-}" "${PLAYWRIGHT_CORE:-}" \
+            "$PWD/node_modules/playwright-core" \
+            "$HOME/Projects/thousand/projects/a11y-sweep/node_modules/playwright-core" \
+            "../a11y-sweep/node_modules/playwright-core"; do
+  [ -n "$cand" ] && [ -d "$cand" ] && { PW="$cand"; break; }
+done
+[ -z "$PW" ] && PW="${MACRO_SOLVER_PLAYWRIGHT:-${PLAYWRIGHT_CORE:-../a11y-sweep/node_modules/playwright-core}}"
 if [ ! -d "$PW" ]; then
   # A skipped browser check is "could not verify", never "verified".
-  bad "playwright-core is not available at $PW, so the page was never loaded"
+  bad "playwright-core is not available, so the page was never loaded.
+        This is a failure rather than a skip: a check that did not run reports the same
+        success as one that ran and passed.
+        To run it:  npm install --no-save playwright-core && npx playwright install chromium
+        Or:         PLAYWRIGHT_CORE=/path/to/playwright-core
+        The 24 solver and independent-checker checks above all run without a browser."
 else
   set +e
   node browser/check_page.js >"$WORK/browser.txt" 2>&1
