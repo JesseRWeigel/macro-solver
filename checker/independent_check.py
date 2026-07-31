@@ -148,7 +148,15 @@ def run(doc, food_table_path, find: Findings):
             seen = set()
             for it in items:
                 fid = it["food_id"]
-                servings = int(it["servings"])
+                raw_servings = it["servings"]
+                # int() would silently truncate 1.5 to 1 and then every macro
+                # total below would be computed against a plan nobody proposed.
+                find.check(
+                    float(raw_servings) == int(float(raw_servings)),
+                    f"day {day['day']} meal {meal['slot']} gives {fid} "
+                    f"{raw_servings} servings, which is not a whole number",
+                )
+                servings = int(float(raw_servings))
                 find.check(
                     fid not in seen,
                     f"day {day['day']} meal {meal['slot']} lists {fid} more than once",

@@ -99,6 +99,10 @@ class CheckerCanFail(unittest.TestCase):
         self.doc["plan"]["days"][0]["meals"][0]["items"][0]["servings"] = 99
         self.assert_flags(self.doc, "servings, limit is")
 
+    def test_fractional_servings_are_caught_not_truncated(self):
+        self.doc["plan"]["days"][0]["meals"][0]["items"][0]["servings"] = 1.5
+        self.assert_flags(self.doc, "not a whole number")
+
     def test_too_many_foods_in_one_meal_is_caught(self):
         meal = self.doc["plan"]["days"][0]["meals"][0]
         meal["items"] = [

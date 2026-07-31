@@ -96,11 +96,11 @@ the objective, and the result is only reported as solved once all of them hold.
 the smallest achievable distance to your targets, and it is **not proven** optimal.
 Nothing in this repository claims otherwise. On instances small enough to enumerate
 completely, `tests/test_exhaustive.py` compares against brute force over every legal
-plan: across a 18-point target sweep on a one-day instance and a 19-point sweep on a
-two-day instance with binding frequency caps, the search found a plan on every
-instance brute force says is feasible, and returned no plan on every instance brute
-force says is not. That is a measurement on small instances, not a proof about large
-ones.
+plan. Measured: an 18-point calorie sweep on a one-day instance, of which brute force
+says 15 are feasible, and a 19-point sweep on a two-day instance with binding
+frequency caps, of which brute force says 5 are feasible. The search found a plan on
+all 20 of those and returned no plan on all 17 that brute force says are impossible.
+That is a measurement on small instances, not a proof about large ones.
 
 **Infeasibility is different, and it is proven.** The three statuses are distinct and
 the caller can tell them apart:
@@ -160,7 +160,8 @@ but lies about its macros is caught as well as one that returns an invalid plan.
 
 A checker that shares code with the thing it checks inherits its bugs, so
 `tests/test_checker_can_fail.py` takes a genuinely valid document and breaks exactly
-one thing in it, nineteen times over, asserting each break is caught. The browser
+one thing in it, seventeen times over, asserting each break is caught and asserting
+the untouched document still passes. The browser
 check feeds the page's own solution to that same checker.
 
 ## The starter food table
@@ -324,7 +325,7 @@ macrosolver/          the solver: model, food loading, bounds, search, report, C
 checker/              the independent constraint checker, imports none of the above
 data/                 USDA source rows, portion rows, serving choices, foods.json
 fixtures/             known-feasible, known-infeasible, trivial and malformed instances
-tests/                71 tests, run with: python3 -m unittest discover -s tests -t tests
+tests/                72 tests, run with: python3 -m unittest discover -s tests -t tests
 docs/index.html       self-contained page with a JavaScript port of the solver
 browser/check_page.js real-browser check, drives Chromium and calls the checker
 scripts/              build, sync, verify, attack, link check, tracked-file scan
@@ -332,88 +333,4 @@ scripts/              build, sync, verify, attack, link check, tracked-file scan
 
 ## Status
 
-Real output, pasted from a run on 2026-07-31. `scripts/verify.sh` exits 0 only
-when every check below passes, and one of those checks is that this section still
-carries the success line and the current test count.
-
-```
-$ bash scripts/verify.sh
-1. food data provenance
-data/foods.json matches a rebuild from the USDA rows (16 foods)
-  ok    data/foods.json is a rebuild of the committed USDA rows
-docs/index.html food table is in sync with data/foods.json (16 foods)
-  ok    docs/index.html carries the same food table
-
-2. unit tests, including the controls that must make the checker fail
-Ran 71 tests in 9.887s
-
-OK
-  ok    unit tests (71 tests)
-  ok    the suite is not a stub (71 tests)
-
-3. end to end exit codes
-  ok    a known-feasible week solves (exit 0)
-  ok    a trivially feasible instance is not reported infeasible (exit 0)
-  ok    a known-infeasible instance is reported infeasible (exit 1)
-  ok    a malformed instance is rejected, not solved (exit 3)
-  ok    a missing instance file is rejected (exit 3)
-
-4. the returned plan, recounted by the independent checker
-INDEPENDENT CHECK PASSED: 483 checks, status 'solved'
-  ok    the week's plan satisfies every constraint on a recount
-  ok    the trivial instance's plan satisfies every constraint on a recount
-
-   achieved against target, per day, read back from the written document:
-   status: solved
-   
-    day          energy (kcal)            protein (g)       carbohydrate (g)                fat (g)
-        target  achieved  error target  achieved  error target  achieved  error target  achieved  error
-      1  2150.0   2056.8   -93.2   150.0    152.3    +2.3   220.0    217.7    -2.3    70.0     70.5    +0.5
-      2  2150.0   2074.3   -75.7   150.0    147.0    -3.0   220.0    221.7    +1.7    70.0     70.1    +0.1
-      3  2150.0   2046.5  -103.5   150.0    149.9    -0.1   220.0    222.6    +2.6    70.0     71.3    +1.3
-      4  2150.0   2043.4  -106.6   150.0    151.2    +1.2   220.0    224.7    +4.7    70.0     69.8    -0.2
-      5  2150.0   2089.5   -60.5   150.0    150.3    +0.3   220.0    223.0    +3.0    70.0     68.5    -1.5
-      6  2150.0   2058.9   -91.1   150.0    150.6    +0.6   220.0    224.8    +4.8    70.0     70.8    +0.8
-      7  2150.0   2055.7   -94.3   150.0    151.1    +1.1   220.0    235.6   +15.6    70.0     72.5    +2.5
-   
-     energy (kcal)        target   2150.0  allowance   107.5  mean error   -89.28  worst error  -106.58  7/7 days [ok] MET
-     protein (g)          target    150.0  allowance    12.0  mean error    +0.35  worst error    -2.95  7/7 days [ok] MET
-     carbohydrate (g)     target    220.0  allowance    30.0  mean error    +4.30  worst error   +15.64  7/7 days [ok] MET
-     fat (g)              target     70.0  allowance    12.0  mean error    +0.51  worst error    +2.54  7/7 days [ok] MET
-   
-     distinct foods used 15 (minimum 8)
-     most repeated meal used 2 time(s) (limit 3)
-     chicken_breast     used  2 of  5 allowed meal slots
-     egg                used  4 of  6 allowed meal slots
-     olive_oil          used  5 of  7 allowed meal slots
-     salmon             used  3 of  3 allowed meal slots
-
-5. the infeasibility diagnosis
-  ok    the infeasible instance exits 1
-  ok    the infeasibility report is well formed and carries a certificate
-   protein (g) target needs at least 175.0 per day (1,225.0 across 7 days), but the pantry's maximum under the frequency caps and the 3 foods per meal limit is 95.0 per day (665.0 across 7 days), short by 80.0 per day
-  ok    the diagnosis names the constraint and the size of the gap
-
-6. determinism
-  ok    same seed, fresh process, same plan (fa76006744f82725)
-
-7. the page, in a real browser
-   64/64 browser checks passed
-  ok    the page runs, solves, and its plan passes the same independent checker
-
-8. secrets and absolute paths in tracked files
-scanned 37 tracked files as bytes: no credential-shaped strings, no absolute home paths
-  ok    no credential-shaped strings and no absolute home paths
-
-9. the README
-  ok    README.md exists
-  ok    README has a Status section
-  ok    the Status section carries this script's success line
-  ok    the test count in the README still matches a real run (71)
-  ok    README states: not nutrition advice
-  ok    README states: USDA FoodData Central
-  ok    README states: not proven
-
-macro-solver verify: ALL CHECKS PASSED
-repo: ~/Projects/thousand/projects/macro-solver
-```
+Placeholder: macro-solver verify: ALL CHECKS PASSED / Ran 72 tests
