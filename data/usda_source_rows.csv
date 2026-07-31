@@ -1,0 +1,97 @@
+fdc_id,description,data_type,publication_date,nutrient_id,nutrient_name,unit_name,amount_per_100g
+168462,"Spinach, raw",sr_legacy_food,2019-04-01,1003,Protein,G,2.86
+168462,"Spinach, raw",sr_legacy_food,2019-04-01,1004,Total lipid (fat),G,0.39
+168462,"Spinach, raw",sr_legacy_food,2019-04-01,1005,"Carbohydrate, by difference",G,3.63
+168462,"Spinach, raw",sr_legacy_food,2019-04-01,1008,Energy,KCAL,23
+168462,"Spinach, raw",sr_legacy_food,2019-04-01,1079,"Fiber, total dietary",G,2.2
+168462,"Spinach, raw",sr_legacy_food,2019-04-01,1093,"Sodium, Na",MG,79
+168483,"Sweet potato, cooked, baked in skin, flesh, without salt",sr_legacy_food,2019-04-01,1003,Protein,G,2.01
+168483,"Sweet potato, cooked, baked in skin, flesh, without salt",sr_legacy_food,2019-04-01,1004,Total lipid (fat),G,0.15
+168483,"Sweet potato, cooked, baked in skin, flesh, without salt",sr_legacy_food,2019-04-01,1005,"Carbohydrate, by difference",G,20.71
+168483,"Sweet potato, cooked, baked in skin, flesh, without salt",sr_legacy_food,2019-04-01,1008,Energy,KCAL,90
+168483,"Sweet potato, cooked, baked in skin, flesh, without salt",sr_legacy_food,2019-04-01,1079,"Fiber, total dietary",G,3.3
+168483,"Sweet potato, cooked, baked in skin, flesh, without salt",sr_legacy_food,2019-04-01,1093,"Sodium, Na",MG,36
+168878,"Rice, white, long-grain, regular, enriched, cooked",sr_legacy_food,2019-04-01,1003,Protein,G,2.69
+168878,"Rice, white, long-grain, regular, enriched, cooked",sr_legacy_food,2019-04-01,1004,Total lipid (fat),G,0.28
+168878,"Rice, white, long-grain, regular, enriched, cooked",sr_legacy_food,2019-04-01,1005,"Carbohydrate, by difference",G,28.17
+168878,"Rice, white, long-grain, regular, enriched, cooked",sr_legacy_food,2019-04-01,1008,Energy,KCAL,130
+168878,"Rice, white, long-grain, regular, enriched, cooked",sr_legacy_food,2019-04-01,1079,"Fiber, total dietary",G,0.4
+168878,"Rice, white, long-grain, regular, enriched, cooked",sr_legacy_food,2019-04-01,1093,"Sodium, Na",MG,1
+169967,"Broccoli, cooked, boiled, drained, without salt",sr_legacy_food,2019-04-01,1003,Protein,G,2.38
+169967,"Broccoli, cooked, boiled, drained, without salt",sr_legacy_food,2019-04-01,1004,Total lipid (fat),G,0.41
+169967,"Broccoli, cooked, boiled, drained, without salt",sr_legacy_food,2019-04-01,1005,"Carbohydrate, by difference",G,7.18
+169967,"Broccoli, cooked, boiled, drained, without salt",sr_legacy_food,2019-04-01,1008,Energy,KCAL,35
+169967,"Broccoli, cooked, boiled, drained, without salt",sr_legacy_food,2019-04-01,1079,"Fiber, total dietary",G,3.3
+169967,"Broccoli, cooked, boiled, drained, without salt",sr_legacy_food,2019-04-01,1093,"Sodium, Na",MG,41
+170567,"Nuts, almonds",sr_legacy_food,2019-04-01,1003,Protein,G,21.15
+170567,"Nuts, almonds",sr_legacy_food,2019-04-01,1004,Total lipid (fat),G,49.93
+170567,"Nuts, almonds",sr_legacy_food,2019-04-01,1005,"Carbohydrate, by difference",G,21.55
+170567,"Nuts, almonds",sr_legacy_food,2019-04-01,1008,Energy,KCAL,579
+170567,"Nuts, almonds",sr_legacy_food,2019-04-01,1079,"Fiber, total dietary",G,12.5
+170567,"Nuts, almonds",sr_legacy_food,2019-04-01,1093,"Sodium, Na",MG,1
+170894,"Yogurt, Greek, plain, nonfat (Includes foods for USDA's Food Distribution Program)",sr_legacy_food,2019-04-01,1003,Protein,G,10.19
+170894,"Yogurt, Greek, plain, nonfat (Includes foods for USDA's Food Distribution Program)",sr_legacy_food,2019-04-01,1004,Total lipid (fat),G,0.39
+170894,"Yogurt, Greek, plain, nonfat (Includes foods for USDA's Food Distribution Program)",sr_legacy_food,2019-04-01,1005,"Carbohydrate, by difference",G,3.6
+170894,"Yogurt, Greek, plain, nonfat (Includes foods for USDA's Food Distribution Program)",sr_legacy_food,2019-04-01,1008,Energy,KCAL,59
+170894,"Yogurt, Greek, plain, nonfat (Includes foods for USDA's Food Distribution Program)",sr_legacy_food,2019-04-01,1079,"Fiber, total dietary",G,0
+170894,"Yogurt, Greek, plain, nonfat (Includes foods for USDA's Food Distribution Program)",sr_legacy_food,2019-04-01,1093,"Sodium, Na",MG,36
+171413,"Oil, olive, salad or cooking",sr_legacy_food,2019-04-01,1003,Protein,G,0
+171413,"Oil, olive, salad or cooking",sr_legacy_food,2019-04-01,1004,Total lipid (fat),G,100
+171413,"Oil, olive, salad or cooking",sr_legacy_food,2019-04-01,1005,"Carbohydrate, by difference",G,0
+171413,"Oil, olive, salad or cooking",sr_legacy_food,2019-04-01,1008,Energy,KCAL,884
+171413,"Oil, olive, salad or cooking",sr_legacy_food,2019-04-01,1079,"Fiber, total dietary",G,0
+171413,"Oil, olive, salad or cooking",sr_legacy_food,2019-04-01,1093,"Sodium, Na",MG,2
+171477,"Chicken, broilers or fryers, breast, meat only, cooked, roasted",sr_legacy_food,2019-04-01,1003,Protein,G,31.02
+171477,"Chicken, broilers or fryers, breast, meat only, cooked, roasted",sr_legacy_food,2019-04-01,1004,Total lipid (fat),G,3.57
+171477,"Chicken, broilers or fryers, breast, meat only, cooked, roasted",sr_legacy_food,2019-04-01,1005,"Carbohydrate, by difference",G,0
+171477,"Chicken, broilers or fryers, breast, meat only, cooked, roasted",sr_legacy_food,2019-04-01,1008,Energy,KCAL,165
+171477,"Chicken, broilers or fryers, breast, meat only, cooked, roasted",sr_legacy_food,2019-04-01,1079,"Fiber, total dietary",G,0
+171477,"Chicken, broilers or fryers, breast, meat only, cooked, roasted",sr_legacy_food,2019-04-01,1093,"Sodium, Na",MG,74
+172421,"Lentils, mature seeds, cooked, boiled, without salt",sr_legacy_food,2019-04-01,1003,Protein,G,9.02
+172421,"Lentils, mature seeds, cooked, boiled, without salt",sr_legacy_food,2019-04-01,1004,Total lipid (fat),G,0.38
+172421,"Lentils, mature seeds, cooked, boiled, without salt",sr_legacy_food,2019-04-01,1005,"Carbohydrate, by difference",G,20.13
+172421,"Lentils, mature seeds, cooked, boiled, without salt",sr_legacy_food,2019-04-01,1008,Energy,KCAL,116
+172421,"Lentils, mature seeds, cooked, boiled, without salt",sr_legacy_food,2019-04-01,1079,"Fiber, total dietary",G,7.9
+172421,"Lentils, mature seeds, cooked, boiled, without salt",sr_legacy_food,2019-04-01,1093,"Sodium, Na",MG,2
+172475,"Tofu, raw, firm, prepared with calcium sulfate",sr_legacy_food,2019-04-01,1003,Protein,G,17.27
+172475,"Tofu, raw, firm, prepared with calcium sulfate",sr_legacy_food,2019-04-01,1004,Total lipid (fat),G,8.72
+172475,"Tofu, raw, firm, prepared with calcium sulfate",sr_legacy_food,2019-04-01,1005,"Carbohydrate, by difference",G,2.78
+172475,"Tofu, raw, firm, prepared with calcium sulfate",sr_legacy_food,2019-04-01,1008,Energy,KCAL,144
+172475,"Tofu, raw, firm, prepared with calcium sulfate",sr_legacy_food,2019-04-01,1079,"Fiber, total dietary",G,2.3
+172475,"Tofu, raw, firm, prepared with calcium sulfate",sr_legacy_food,2019-04-01,1093,"Sodium, Na",MG,14
+173417,"Cheese, cottage, lowfat, 1% milkfat",sr_legacy_food,2019-04-01,1003,Protein,G,12.39
+173417,"Cheese, cottage, lowfat, 1% milkfat",sr_legacy_food,2019-04-01,1004,Total lipid (fat),G,1.02
+173417,"Cheese, cottage, lowfat, 1% milkfat",sr_legacy_food,2019-04-01,1005,"Carbohydrate, by difference",G,2.72
+173417,"Cheese, cottage, lowfat, 1% milkfat",sr_legacy_food,2019-04-01,1008,Energy,KCAL,72
+173417,"Cheese, cottage, lowfat, 1% milkfat",sr_legacy_food,2019-04-01,1079,"Fiber, total dietary",G,0
+173417,"Cheese, cottage, lowfat, 1% milkfat",sr_legacy_food,2019-04-01,1093,"Sodium, Na",MG,406
+173424,"Egg, whole, cooked, hard-boiled",sr_legacy_food,2019-04-01,1003,Protein,G,12.58
+173424,"Egg, whole, cooked, hard-boiled",sr_legacy_food,2019-04-01,1004,Total lipid (fat),G,10.61
+173424,"Egg, whole, cooked, hard-boiled",sr_legacy_food,2019-04-01,1005,"Carbohydrate, by difference",G,1.12
+173424,"Egg, whole, cooked, hard-boiled",sr_legacy_food,2019-04-01,1008,Energy,KCAL,155
+173424,"Egg, whole, cooked, hard-boiled",sr_legacy_food,2019-04-01,1079,"Fiber, total dietary",G,0
+173424,"Egg, whole, cooked, hard-boiled",sr_legacy_food,2019-04-01,1093,"Sodium, Na",MG,124
+173735,"Beans, black, mature seeds, cooked, boiled, without salt",sr_legacy_food,2019-04-01,1003,Protein,G,8.86
+173735,"Beans, black, mature seeds, cooked, boiled, without salt",sr_legacy_food,2019-04-01,1004,Total lipid (fat),G,0.54
+173735,"Beans, black, mature seeds, cooked, boiled, without salt",sr_legacy_food,2019-04-01,1005,"Carbohydrate, by difference",G,23.71
+173735,"Beans, black, mature seeds, cooked, boiled, without salt",sr_legacy_food,2019-04-01,1008,Energy,KCAL,132
+173735,"Beans, black, mature seeds, cooked, boiled, without salt",sr_legacy_food,2019-04-01,1079,"Fiber, total dietary",G,8.7
+173735,"Beans, black, mature seeds, cooked, boiled, without salt",sr_legacy_food,2019-04-01,1093,"Sodium, Na",MG,1
+173904,"Cereals, oats, regular and quick, not fortified, dry",sr_legacy_food,2019-04-01,1003,Protein,G,13.15
+173904,"Cereals, oats, regular and quick, not fortified, dry",sr_legacy_food,2019-04-01,1004,Total lipid (fat),G,6.52
+173904,"Cereals, oats, regular and quick, not fortified, dry",sr_legacy_food,2019-04-01,1005,"Carbohydrate, by difference",G,67.7
+173904,"Cereals, oats, regular and quick, not fortified, dry",sr_legacy_food,2019-04-01,1008,Energy,KCAL,379
+173904,"Cereals, oats, regular and quick, not fortified, dry",sr_legacy_food,2019-04-01,1079,"Fiber, total dietary",G,10.1
+173904,"Cereals, oats, regular and quick, not fortified, dry",sr_legacy_food,2019-04-01,1093,"Sodium, Na",MG,6
+173944,"Bananas, raw",sr_legacy_food,2019-04-01,1003,Protein,G,1.09
+173944,"Bananas, raw",sr_legacy_food,2019-04-01,1004,Total lipid (fat),G,0.33
+173944,"Bananas, raw",sr_legacy_food,2019-04-01,1005,"Carbohydrate, by difference",G,22.84
+173944,"Bananas, raw",sr_legacy_food,2019-04-01,1008,Energy,KCAL,89
+173944,"Bananas, raw",sr_legacy_food,2019-04-01,1079,"Fiber, total dietary",G,2.6
+173944,"Bananas, raw",sr_legacy_food,2019-04-01,1093,"Sodium, Na",MG,1
+175168,"Fish, salmon, Atlantic, farmed, cooked, dry heat",sr_legacy_food,2019-04-01,1003,Protein,G,22.1
+175168,"Fish, salmon, Atlantic, farmed, cooked, dry heat",sr_legacy_food,2019-04-01,1004,Total lipid (fat),G,12.35
+175168,"Fish, salmon, Atlantic, farmed, cooked, dry heat",sr_legacy_food,2019-04-01,1005,"Carbohydrate, by difference",G,0
+175168,"Fish, salmon, Atlantic, farmed, cooked, dry heat",sr_legacy_food,2019-04-01,1008,Energy,KCAL,206
+175168,"Fish, salmon, Atlantic, farmed, cooked, dry heat",sr_legacy_food,2019-04-01,1079,"Fiber, total dietary",G,0
+175168,"Fish, salmon, Atlantic, farmed, cooked, dry heat",sr_legacy_food,2019-04-01,1093,"Sodium, Na",MG,61

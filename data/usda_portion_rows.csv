@@ -1,0 +1,50 @@
+fdc_id,amount,measure_unit,modifier,gram_weight
+168462,1,undetermined,leaf,10
+168462,1,undetermined,cup,30
+168462,1,undetermined,package (10 oz),284
+168462,1,undetermined,bunch,340
+168483,1,undetermined,small,60
+168483,1,undetermined,"medium (2"" dia, 5"" long, raw)",114
+168483,1,undetermined,large,180
+168483,1,undetermined,cup,200
+168878,1,undetermined,cup,158
+169967,1,undetermined,"spear (about 5"" long)",37
+169967,0.5,undetermined,"cup, chopped",78
+169967,1,undetermined,"stalk, small (5"" long)",140
+169967,1,undetermined,"stalk, medium (7-1/2"" - 8"" long)",180
+169967,1,undetermined,"stalk, large (11""-12"" long)",280
+170567,1,undetermined,almond,1.2
+170567,1,undetermined,oz (23 whole kernels),28.35
+170567,1,undetermined,"cup, sliced",92
+170567,1,undetermined,"cup, ground",95
+170567,1,undetermined,"cup, slivered",108
+170567,1,undetermined,"cup, whole",143
+170894,1,undetermined,container,170
+171413,1,undetermined,tsp,4.5
+171413,1,undetermined,tablespoon,13.5
+171413,1,undetermined,cup,216
+171477,1,undetermined,unit (yield from 1 lb ready-to-cook chicken),52
+171477,0.5,undetermined,"breast, bone and skin removed",86
+171477,1,undetermined,"cup, chopped or diced",140
+172421,1,undetermined,tbsp,12.3
+172421,1,undetermined,cup,198
+172475,0.25,undetermined,block,81
+172475,0.5,undetermined,cup,126
+173417,4,undetermined,oz,113
+173417,1,undetermined,cup (not packed),226
+173424,1,undetermined,tbsp,8.5
+173424,1,undetermined,large,50
+173424,1,undetermined,"cup, chopped",136
+173735,1,undetermined,cup,172
+173904,0.33,undetermined,cup,27
+173904,1,undetermined,cup,81
+173944,1,undetermined,"extra small (less than 6"" long)",81
+173944,1,undetermined,"small (6"" to 6-7/8"" long)",101
+173944,1,undetermined,"medium (7"" to 7-7/8"" long)",118
+173944,1,undetermined,NLEA serving,126
+173944,1,undetermined,"large (8"" to 8-7/8"" long)",136
+173944,1,undetermined,"cup, sliced",150
+173944,1,undetermined,"extra large (9"" or longer)",152
+173944,1,undetermined,"cup, mashed",225
+175168,3,undetermined,oz,85
+175168,0.5,undetermined,fillet,178

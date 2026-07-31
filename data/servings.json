@@ -1,0 +1,37 @@
+{
+  "_comment": [
+    "Serving definitions for the starter pantry. Every serving is a portion row that",
+    "USDA FoodData Central publishes for that same fdc_id, so the gram weight is cited",
+    "rather than chosen by hand. 'portion' is the USDA modifier text and 'grams' is the",
+    "USDA gram_weight from food_portion.csv in the SR Legacy CSV distribution.",
+    "Nutrient values themselves are never listed here. They are derived from",
+    "data/usda_source_rows.csv by scripts/build_food_table.py."
+  ],
+  "dataset": {
+    "name": "USDA FoodData Central, SR Legacy",
+    "distribution": "FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+    "url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+    "zip_sha256": "b80817294b8850530aaedf2e515c02593b1824f763a0ff356e5c2081643e6fd0",
+    "food_detail_url_pattern": "https://fdc.nal.usda.gov/food-details/{fdc_id}/nutrients",
+    "license": "USDA FoodData Central data are in the public domain (see https://fdc.nal.usda.gov/)",
+    "retrieved": "2026-07-31"
+  },
+  "foods": [
+    {"id": "chicken_breast", "fdc_id": 171477, "portion": "0.5 breast, bone and skin removed", "grams": 86},
+    {"id": "egg", "fdc_id": 173424, "portion": "1 large", "grams": 50},
+    {"id": "white_rice", "fdc_id": 168878, "portion": "1 cup", "grams": 158},
+    {"id": "lentils", "fdc_id": 172421, "portion": "1 cup", "grams": 198},
+    {"id": "oats", "fdc_id": 173904, "portion": "1 cup", "grams": 81},
+    {"id": "broccoli", "fdc_id": 169967, "portion": "0.5 cup, chopped", "grams": 78},
+    {"id": "sweet_potato", "fdc_id": 168483, "portion": "1 cup", "grams": 200},
+    {"id": "olive_oil", "fdc_id": 171413, "portion": "1 tablespoon", "grams": 13.5},
+    {"id": "almonds", "fdc_id": 170567, "portion": "1 oz (23 whole kernels)", "grams": 28.35},
+    {"id": "greek_yogurt", "fdc_id": 170894, "portion": "1 container", "grams": 170},
+    {"id": "salmon", "fdc_id": 175168, "portion": "3 oz", "grams": 85},
+    {"id": "black_beans", "fdc_id": 173735, "portion": "1 cup", "grams": 172},
+    {"id": "banana", "fdc_id": 173944, "portion": "1 medium (7\" to 7-7/8\" long)", "grams": 118},
+    {"id": "tofu", "fdc_id": 172475, "portion": "0.5 cup", "grams": 126},
+    {"id": "spinach", "fdc_id": 168462, "portion": "1 cup", "grams": 30},
+    {"id": "cottage_cheese", "fdc_id": 173417, "portion": "4 oz", "grams": 113}
+  ]
+}

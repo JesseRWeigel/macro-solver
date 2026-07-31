@@ -1,0 +1,533 @@
+{
+  "dataset": {
+    "name": "USDA FoodData Central, SR Legacy",
+    "distribution": "FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+    "url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+    "zip_sha256": "b80817294b8850530aaedf2e515c02593b1824f763a0ff356e5c2081643e6fd0",
+    "food_detail_url_pattern": "https://fdc.nal.usda.gov/food-details/{fdc_id}/nutrients",
+    "license": "USDA FoodData Central data are in the public domain (see https://fdc.nal.usda.gov/)",
+    "retrieved": "2026-07-31"
+  },
+  "units": {
+    "kcal": "kcal",
+    "protein_g": "g",
+    "carb_g": "g",
+    "fat_g": "g",
+    "fiber_g": "g",
+    "sodium_mg": "mg"
+  },
+  "foods": [
+    {
+      "id": "chicken_breast",
+      "name": "Chicken, broilers or fryers, breast, meat only, cooked, roasted",
+      "serving": {
+        "description": "0.5 breast, bone and skin removed",
+        "grams": 86.0
+      },
+      "per_serving": {
+        "kcal": 141.9,
+        "protein_g": 26.6772,
+        "carb_g": 0.0,
+        "fat_g": 3.0702,
+        "fiber_g": 0.0,
+        "sodium_mg": 63.64
+      },
+      "per_100g": {
+        "kcal": 165.0,
+        "protein_g": 31.02,
+        "carb_g": 0.0,
+        "fat_g": 3.57,
+        "fiber_g": 0.0,
+        "sodium_mg": 74.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 171477,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/171477/nutrients",
+        "serving_from": "USDA food_portion row: 0.5 breast, bone and skin removed = 86.0 g"
+      }
+    },
+    {
+      "id": "egg",
+      "name": "Egg, whole, cooked, hard-boiled",
+      "serving": {
+        "description": "1 large",
+        "grams": 50.0
+      },
+      "per_serving": {
+        "kcal": 77.5,
+        "protein_g": 6.29,
+        "carb_g": 0.56,
+        "fat_g": 5.305,
+        "fiber_g": 0.0,
+        "sodium_mg": 62.0
+      },
+      "per_100g": {
+        "kcal": 155.0,
+        "protein_g": 12.58,
+        "carb_g": 1.12,
+        "fat_g": 10.61,
+        "fiber_g": 0.0,
+        "sodium_mg": 124.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 173424,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/173424/nutrients",
+        "serving_from": "USDA food_portion row: 1 large = 50.0 g"
+      }
+    },
+    {
+      "id": "white_rice",
+      "name": "Rice, white, long-grain, regular, enriched, cooked",
+      "serving": {
+        "description": "1 cup",
+        "grams": 158.0
+      },
+      "per_serving": {
+        "kcal": 205.4,
+        "protein_g": 4.2502,
+        "carb_g": 44.5086,
+        "fat_g": 0.4424,
+        "fiber_g": 0.632,
+        "sodium_mg": 1.58
+      },
+      "per_100g": {
+        "kcal": 130.0,
+        "protein_g": 2.69,
+        "carb_g": 28.17,
+        "fat_g": 0.28,
+        "fiber_g": 0.4,
+        "sodium_mg": 1.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 168878,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/168878/nutrients",
+        "serving_from": "USDA food_portion row: 1 cup = 158.0 g"
+      }
+    },
+    {
+      "id": "lentils",
+      "name": "Lentils, mature seeds, cooked, boiled, without salt",
+      "serving": {
+        "description": "1 cup",
+        "grams": 198.0
+      },
+      "per_serving": {
+        "kcal": 229.68,
+        "protein_g": 17.8596,
+        "carb_g": 39.8574,
+        "fat_g": 0.7524,
+        "fiber_g": 15.642,
+        "sodium_mg": 3.96
+      },
+      "per_100g": {
+        "kcal": 116.0,
+        "protein_g": 9.02,
+        "carb_g": 20.13,
+        "fat_g": 0.38,
+        "fiber_g": 7.9,
+        "sodium_mg": 2.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 172421,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/172421/nutrients",
+        "serving_from": "USDA food_portion row: 1 cup = 198.0 g"
+      }
+    },
+    {
+      "id": "oats",
+      "name": "Cereals, oats, regular and quick, not fortified, dry",
+      "serving": {
+        "description": "1 cup",
+        "grams": 81.0
+      },
+      "per_serving": {
+        "kcal": 306.99,
+        "protein_g": 10.6515,
+        "carb_g": 54.837,
+        "fat_g": 5.2812,
+        "fiber_g": 8.181,
+        "sodium_mg": 4.86
+      },
+      "per_100g": {
+        "kcal": 379.0,
+        "protein_g": 13.15,
+        "carb_g": 67.7,
+        "fat_g": 6.52,
+        "fiber_g": 10.1,
+        "sodium_mg": 6.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 173904,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/173904/nutrients",
+        "serving_from": "USDA food_portion row: 1 cup = 81.0 g"
+      }
+    },
+    {
+      "id": "broccoli",
+      "name": "Broccoli, cooked, boiled, drained, without salt",
+      "serving": {
+        "description": "0.5 cup, chopped",
+        "grams": 78.0
+      },
+      "per_serving": {
+        "kcal": 27.3,
+        "protein_g": 1.8564,
+        "carb_g": 5.6004,
+        "fat_g": 0.3198,
+        "fiber_g": 2.574,
+        "sodium_mg": 31.98
+      },
+      "per_100g": {
+        "kcal": 35.0,
+        "protein_g": 2.38,
+        "carb_g": 7.18,
+        "fat_g": 0.41,
+        "fiber_g": 3.3,
+        "sodium_mg": 41.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 169967,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/169967/nutrients",
+        "serving_from": "USDA food_portion row: 0.5 cup, chopped = 78.0 g"
+      }
+    },
+    {
+      "id": "sweet_potato",
+      "name": "Sweet potato, cooked, baked in skin, flesh, without salt",
+      "serving": {
+        "description": "1 cup",
+        "grams": 200.0
+      },
+      "per_serving": {
+        "kcal": 180.0,
+        "protein_g": 4.02,
+        "carb_g": 41.42,
+        "fat_g": 0.3,
+        "fiber_g": 6.6,
+        "sodium_mg": 72.0
+      },
+      "per_100g": {
+        "kcal": 90.0,
+        "protein_g": 2.01,
+        "carb_g": 20.71,
+        "fat_g": 0.15,
+        "fiber_g": 3.3,
+        "sodium_mg": 36.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 168483,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/168483/nutrients",
+        "serving_from": "USDA food_portion row: 1 cup = 200.0 g"
+      }
+    },
+    {
+      "id": "olive_oil",
+      "name": "Oil, olive, salad or cooking",
+      "serving": {
+        "description": "1 tablespoon",
+        "grams": 13.5
+      },
+      "per_serving": {
+        "kcal": 119.34,
+        "protein_g": 0.0,
+        "carb_g": 0.0,
+        "fat_g": 13.5,
+        "fiber_g": 0.0,
+        "sodium_mg": 0.27
+      },
+      "per_100g": {
+        "kcal": 884.0,
+        "protein_g": 0.0,
+        "carb_g": 0.0,
+        "fat_g": 100.0,
+        "fiber_g": 0.0,
+        "sodium_mg": 2.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 171413,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/171413/nutrients",
+        "serving_from": "USDA food_portion row: 1 tablespoon = 13.5 g"
+      }
+    },
+    {
+      "id": "almonds",
+      "name": "Nuts, almonds",
+      "serving": {
+        "description": "1 oz (23 whole kernels)",
+        "grams": 28.35
+      },
+      "per_serving": {
+        "kcal": 164.1465,
+        "protein_g": 5.996,
+        "carb_g": 6.1094,
+        "fat_g": 14.1552,
+        "fiber_g": 3.5438,
+        "sodium_mg": 0.2835
+      },
+      "per_100g": {
+        "kcal": 579.0,
+        "protein_g": 21.15,
+        "carb_g": 21.55,
+        "fat_g": 49.93,
+        "fiber_g": 12.5,
+        "sodium_mg": 1.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 170567,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/170567/nutrients",
+        "serving_from": "USDA food_portion row: 1 oz (23 whole kernels) = 28.35 g"
+      }
+    },
+    {
+      "id": "greek_yogurt",
+      "name": "Yogurt, Greek, plain, nonfat (Includes foods for USDA's Food Distribution Program)",
+      "serving": {
+        "description": "1 container",
+        "grams": 170.0
+      },
+      "per_serving": {
+        "kcal": 100.3,
+        "protein_g": 17.323,
+        "carb_g": 6.12,
+        "fat_g": 0.663,
+        "fiber_g": 0.0,
+        "sodium_mg": 61.2
+      },
+      "per_100g": {
+        "kcal": 59.0,
+        "protein_g": 10.19,
+        "carb_g": 3.6,
+        "fat_g": 0.39,
+        "fiber_g": 0.0,
+        "sodium_mg": 36.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 170894,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/170894/nutrients",
+        "serving_from": "USDA food_portion row: 1 container = 170.0 g"
+      }
+    },
+    {
+      "id": "salmon",
+      "name": "Fish, salmon, Atlantic, farmed, cooked, dry heat",
+      "serving": {
+        "description": "3 oz",
+        "grams": 85.0
+      },
+      "per_serving": {
+        "kcal": 175.1,
+        "protein_g": 18.785,
+        "carb_g": 0.0,
+        "fat_g": 10.4975,
+        "fiber_g": 0.0,
+        "sodium_mg": 51.85
+      },
+      "per_100g": {
+        "kcal": 206.0,
+        "protein_g": 22.1,
+        "carb_g": 0.0,
+        "fat_g": 12.35,
+        "fiber_g": 0.0,
+        "sodium_mg": 61.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 175168,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/175168/nutrients",
+        "serving_from": "USDA food_portion row: 3 oz = 85.0 g"
+      }
+    },
+    {
+      "id": "black_beans",
+      "name": "Beans, black, mature seeds, cooked, boiled, without salt",
+      "serving": {
+        "description": "1 cup",
+        "grams": 172.0
+      },
+      "per_serving": {
+        "kcal": 227.04,
+        "protein_g": 15.2392,
+        "carb_g": 40.7812,
+        "fat_g": 0.9288,
+        "fiber_g": 14.964,
+        "sodium_mg": 1.72
+      },
+      "per_100g": {
+        "kcal": 132.0,
+        "protein_g": 8.86,
+        "carb_g": 23.71,
+        "fat_g": 0.54,
+        "fiber_g": 8.7,
+        "sodium_mg": 1.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 173735,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/173735/nutrients",
+        "serving_from": "USDA food_portion row: 1 cup = 172.0 g"
+      }
+    },
+    {
+      "id": "banana",
+      "name": "Bananas, raw",
+      "serving": {
+        "description": "1 medium (7\" to 7-7/8\" long)",
+        "grams": 118.0
+      },
+      "per_serving": {
+        "kcal": 105.02,
+        "protein_g": 1.2862,
+        "carb_g": 26.9512,
+        "fat_g": 0.3894,
+        "fiber_g": 3.068,
+        "sodium_mg": 1.18
+      },
+      "per_100g": {
+        "kcal": 89.0,
+        "protein_g": 1.09,
+        "carb_g": 22.84,
+        "fat_g": 0.33,
+        "fiber_g": 2.6,
+        "sodium_mg": 1.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 173944,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/173944/nutrients",
+        "serving_from": "USDA food_portion row: 1 medium (7\" to 7-7/8\" long) = 118.0 g"
+      }
+    },
+    {
+      "id": "tofu",
+      "name": "Tofu, raw, firm, prepared with calcium sulfate",
+      "serving": {
+        "description": "0.5 cup",
+        "grams": 126.0
+      },
+      "per_serving": {
+        "kcal": 181.44,
+        "protein_g": 21.7602,
+        "carb_g": 3.5028,
+        "fat_g": 10.9872,
+        "fiber_g": 2.898,
+        "sodium_mg": 17.64
+      },
+      "per_100g": {
+        "kcal": 144.0,
+        "protein_g": 17.27,
+        "carb_g": 2.78,
+        "fat_g": 8.72,
+        "fiber_g": 2.3,
+        "sodium_mg": 14.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 172475,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/172475/nutrients",
+        "serving_from": "USDA food_portion row: 0.5 cup = 126.0 g"
+      }
+    },
+    {
+      "id": "spinach",
+      "name": "Spinach, raw",
+      "serving": {
+        "description": "1 cup",
+        "grams": 30.0
+      },
+      "per_serving": {
+        "kcal": 6.9,
+        "protein_g": 0.858,
+        "carb_g": 1.089,
+        "fat_g": 0.117,
+        "fiber_g": 0.66,
+        "sodium_mg": 23.7
+      },
+      "per_100g": {
+        "kcal": 23.0,
+        "protein_g": 2.86,
+        "carb_g": 3.63,
+        "fat_g": 0.39,
+        "fiber_g": 2.2,
+        "sodium_mg": 79.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 168462,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/168462/nutrients",
+        "serving_from": "USDA food_portion row: 1 cup = 30.0 g"
+      }
+    },
+    {
+      "id": "cottage_cheese",
+      "name": "Cheese, cottage, lowfat, 1% milkfat",
+      "serving": {
+        "description": "4 oz",
+        "grams": 113.0
+      },
+      "per_serving": {
+        "kcal": 81.36,
+        "protein_g": 14.0007,
+        "carb_g": 3.0736,
+        "fat_g": 1.1526,
+        "fiber_g": 0.0,
+        "sodium_mg": 458.78
+      },
+      "per_100g": {
+        "kcal": 72.0,
+        "protein_g": 12.39,
+        "carb_g": 2.72,
+        "fat_g": 1.02,
+        "fiber_g": 0.0,
+        "sodium_mg": 406.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 173417,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/173417/nutrients",
+        "serving_from": "USDA food_portion row: 4 oz = 113.0 g"
+      }
+    }
+  ]
+}
