@@ -31,10 +31,32 @@ const ROOT = path.resolve(__dirname, "..");
 const PAGE = path.join(ROOT, "docs", "index.html");
 const TITLE = "macro-solver";
 
-const PW = process.env.MACRO_SOLVER_PLAYWRIGHT
-  ? path.resolve(process.env.MACRO_SOLVER_PLAYWRIGHT)
-  : path.resolve(ROOT, "..", "a11y-sweep", "node_modules", "playwright-core");
-const { chromium } = require(PW);
+// verify.sh resolves playwright and passes it in, but this script also runs on its own, so it
+// repeats the search rather than trusting one hardcoded sibling path. Honouring PLAYWRIGHT_CORE
+// as well as the project-specific name, since every other project in this catalog uses that one.
+const PW_CANDIDATES = [
+  process.env.MACRO_SOLVER_PLAYWRIGHT,
+  process.env.PLAYWRIGHT_CORE,
+  path.resolve(ROOT, "node_modules", "playwright-core"),
+  "playwright-core",
+  "playwright",
+  path.resolve(ROOT, "..", "a11y-sweep", "node_modules", "playwright-core"),
+].filter(Boolean);
+let chromium;
+const triedPw = [];
+for (const c of PW_CANDIDATES) {
+  try { ({ chromium } = require(c)); break; } catch (e) { triedPw.push(c); }
+}
+if (!chromium) {
+  console.error(
+    "playwright-core not found, so the page was NOT checked in a browser.\n"
+    + 'This is a failure rather than a skip, because a check that did not run is\n'
+    + '"could not verify", never "verified".\n\n'
+    + "To run it:  npm install --no-save playwright-core && npx playwright install chromium\n"
+    + "Or:         PLAYWRIGHT_CORE=/path/to/playwright-core\n\n"
+    + "Tried: " + triedPw.join(", "));
+  process.exit(1);
+}
 
 let failures = 0;
 let checks = 0;
