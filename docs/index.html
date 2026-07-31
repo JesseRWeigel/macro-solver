@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>macro-solver</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #f7f7f5;
+  --panel: #ffffff;
+  --panel-2: #f0f0ee;
+  --ink: #1a1a18;
+  --ink-dim: #55554f;
+  --line: #d4d4cd;
+  --accent: #3a5f8a;
+  --met-bg: #e3efe1;
+  --met-ink: #1f4d20;
+  --miss-bg: #fbe6de;
+  --miss-ink: #7a2d10;
+  --warn-bg: #fdf3d8;
+  --warn-ink: #5a4409;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14161a;
+    --panel: #1c1f25;
+    --panel-2: #23272e;
+    --ink: #e8e8e4;
+    --ink-dim: #a3a49e;
+    --line: #363b44;
+    --accent: #8fb6e0;
+    --met-bg: #1e3520;
+    --met-ink: #b9dfb6;
+    --miss-bg: #3d2016;
+    --miss-ink: #f2bda6;
+    --warn-bg: #3a3117;
+    --warn-ink: #f0dca0;
+  }
+}
+/* Explicit overrides win in both directions, whatever the system prefers. */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f7f7f5;
+  --panel: #ffffff;
+  --panel-2: #f0f0ee;
+  --ink: #1a1a18;
+  --ink-dim: #55554f;
+  --line: #d4d4cd;
+  --accent: #3a5f8a;
+  --met-bg: #e3efe1;
+  --met-ink: #1f4d20;
+  --miss-bg: #fbe6de;
+  --miss-ink: #7a2d10;
+  --warn-bg: #fdf3d8;
+  --warn-ink: #5a4409;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #14161a;
+  --panel: #1c1f25;
+  --panel-2: #23272e;
+  --ink: #e8e8e4;
+  --ink-dim: #a3a49e;
+  --line: #363b44;
+  --accent: #8fb6e0;
+  --met-bg: #1e3520;
+  --met-ink: #b9dfb6;
+  --miss-bg: #3d2016;
+  --miss-ink: #f2bda6;
+  --warn-bg: #3a3117;
+  --warn-ink: #f0dca0;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 20px 16px 64px; }
+h1 { font-size: 1.6rem; margin: 0 0 4px; letter-spacing: -0.01em; }
+h2 { font-size: 1.15rem; margin: 28px 0 10px; }
+h3 { font-size: 1rem; margin: 18px 0 8px; }
+p { margin: 0 0 12px; }
+a { color: var(--accent); }
+code, .mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.92em;
+}
+
+.topbar {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  align-items: baseline; justify-content: space-between;
+}
+.sub { color: var(--ink-dim); margin: 0 0 16px; }
+
+.framing {
+  border: 2px solid var(--line);
+  border-left: 6px solid var(--accent);
+  background: var(--panel);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 0 0 22px;
+}
+.framing strong { display: block; margin-bottom: 6px; }
+.framing p:last-child { margin-bottom: 0; }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 12px;
+}
+.grid > * { min-width: 0; }
+
+fieldset {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px 12px 12px;
+  margin: 0;
+  min-inline-size: 0;   /* a fieldset defaults to min-content and overflows */
+  min-width: 0;
+}
+legend { padding: 0 6px; font-weight: 600; font-size: 0.9rem; }
+
+label { display: block; font-size: 0.86rem; color: var(--ink-dim); margin-bottom: 2px; }
+input[type="number"], select {
+  width: 100%;
+  max-width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--panel-2);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.95rem;
+}
+.row { display: flex; gap: 8px; flex-wrap: wrap; }
+.row > div { flex: 1 1 120px; min-width: 0; }
+
+.pantry-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 6px 14px;
+}
+.pantry-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+  min-width: 0;
+}
+.pantry-item span.nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pantry-item input[type="number"] { width: 4.5rem; padding: 3px 5px; }
+.pantry-item input[type="checkbox"] { width: 1rem; height: 1rem; }
+
+button {
+  font: inherit;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+:root[data-theme="dark"] button, button.dark-ink { color: #10151b; }
+@media (prefers-color-scheme: dark) { button { color: #10151b; } }
+:root[data-theme="light"] button { color: #ffffff; }
+button.ghost {
+  background: var(--panel-2);
+  color: var(--ink);
+  font-weight: 500;
+}
+:root[data-theme="dark"] button.ghost { color: var(--ink); }
+@media (prefers-color-scheme: dark) { button.ghost { color: var(--ink); } }
+:root[data-theme="light"] button.ghost { color: var(--ink); }
+
+.actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
+
+.scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); }
+th { font-weight: 600; color: var(--ink-dim); white-space: nowrap; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 1px 8px 1px 6px;
+  border-radius: 999px;
+  font-size: 0.78rem; font-weight: 700;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+.badge.met { background: var(--met-bg); color: var(--met-ink); }
+.badge.miss { background: var(--miss-bg); color: var(--miss-ink); }
+/* The shape carries the meaning as well as the colour and the word, so the
+   status survives a greyscale print and any form of colour blindness. */
+.badge .shape { font-size: 0.9em; line-height: 1; }
+
+.status {
+  border-radius: 8px; padding: 12px 14px; margin-bottom: 14px;
+  border: 1px solid var(--line);
+}
+.status.ok { background: var(--met-bg); color: var(--met-ink); }
+.status.bad { background: var(--miss-bg); color: var(--miss-ink); }
+.status.warn { background: var(--warn-bg); color: var(--warn-ink); }
+.status h3 { margin: 0 0 6px; }
+.status p { margin: 0 0 6px; }
+.status p:last-child { margin: 0; }
+
+.day { border: 1px solid var(--line); border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
+.day > .day-head {
+  background: var(--panel-2); padding: 8px 12px; font-weight: 700;
+  border-bottom: 1px solid var(--line);
+}
+.day > .day-body { padding: 10px 12px; }
+ul.meals { margin: 0 0 10px; padding-left: 20px; }
+ul.meals li { margin-bottom: 2px; }
+
+.foot { color: var(--ink-dim); font-size: 0.86rem; margin-top: 28px; }
+.hidden { display: none; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <h1>macro-solver</h1>
+    <button class="ghost" id="theme-toggle" type="button">Switch theme</button>
+  </div>
+  <p class="sub">Fit a week of meals to macro targets you supply, from a pantry you list.</p>
+
+  <div class="framing">
+    <strong>Read this first</strong>
+    <p>
+      This page solves for numbers <em>you</em> type in, or numbers you copy from your
+      clinician. It does not choose targets for you, it does not check whether your
+      targets are appropriate for you or for anyone, and it is not nutrition or medical
+      advice.
+    </p>
+    <p>
+      Nutrition figures come from USDA FoodData Central reference entries. Real food
+      varies from reference values, sometimes by a lot, so treat every total here as an
+      estimate rather than a measurement.
+    </p>
+  </div>
+
+  <div class="panel">
+    <h2 style="margin-top:0">Your targets, per day</h2>
+    <p class="sub" style="margin-bottom:10px">
+      Enter a target and how far off it may land. The wider of the absolute and
+      percentage tolerance is used.
+    </p>
+    <div class="grid" id="targets"></div>
+  </div>
+
+  <div class="panel">
+    <h2 style="margin-top:0">Your pantry</h2>
+    <p class="sub" style="margin-bottom:10px">
+      Tick the foods you actually have. The number beside each one is how many meal
+      slots in the week it may appear in, for example chicken at most 3 times.
+    </p>
+    <div class="pantry-list" id="pantry"></div>
+  </div>
+
+  <div class="panel">
+    <h2 style="margin-top:0">Structure and variety</h2>
+    <div class="grid">
+      <fieldset>
+        <legend>Plan shape</legend>
+        <div class="row">
+          <div><label for="days">Days</label><input type="number" id="days" min="1" max="14" value="7"></div>
+          <div><label for="mpd">Meals per day</label><input type="number" id="mpd" min="1" max="6" value="3"></div>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <div><label for="fpm">Foods per meal</label><input type="number" id="fpm" min="1" max="4" value="3"></div>
+          <div><label for="spf">Servings per food</label><input type="number" id="spf" min="1" max="4" value="2"></div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Variety</legend>
+        <div class="row">
+          <div><label for="repeats">Max times one meal may repeat</label><input type="number" id="repeats" min="1" max="21" value="3"></div>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <div><label for="distinct">Minimum distinct foods</label><input type="number" id="distinct" min="0" max="30" value="8"></div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Search</legend>
+        <div class="row">
+          <div><label for="seed">Seed</label><input type="number" id="seed" min="0" max="999999" value="7"></div>
+        </div>
+        <p class="sub" style="margin:8px 0 0; font-size:0.8rem">
+          The same seed and the same inputs always give the same plan.
+        </p>
+      </fieldset>
+    </div>
+    <div class="actions">
+      <button id="solve" type="button">Solve the week</button>
+      <button class="ghost" id="reset" type="button">Reset to the example</button>
+      <span id="timing" class="sub" style="margin:0"></span>
+    </div>
+  </div>
+
+  <div id="result" aria-live="polite"></div>
+
+  <h2>The starter food table</h2>
+  <p class="sub">
+    Deliberately small. Every figure below is a USDA FoodData Central value for the
+    named entry, scaled from per 100 g to the serving size, and the serving size is
+    itself a USDA portion row for that same entry. Ten well-sourced foods are worth
+    more than a hundred guessed ones, so nothing was added that could not be cited.
+  </p>
+  <div class="scroll-x panel" style="padding:0">
+    <table id="food-table">
+      <thead>
+        <tr>
+          <th>Food</th><th>Serving</th>
+          <th class="num">kcal</th><th class="num">Protein g</th>
+          <th class="num">Carb g</th><th class="num">Fat g</th>
+          <th class="num">Fibre g</th><th class="num">Sodium mg</th>
+          <th>Source</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <p class="foot" id="dataset-note"></p>
+  <p class="foot">
+    macro-solver is a constraint solver over numbers someone else chose. It does not
+    recommend intakes and has no opinion about whether your targets are sensible.
+  </p>
+</div>
+
+<script>
+/* FOOD_TABLE:BEGIN  generated by scripts/sync_page_data.py, do not edit by hand */
+const FOOD_TABLE = {
+  "dataset": {
+    "name": "USDA FoodData Central, SR Legacy",
+    "distribution": "FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+    "url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+    "zip_sha256": "b80817294b8850530aaedf2e515c02593b1824f763a0ff356e5c2081643e6fd0",
+    "food_detail_url_pattern": "https://fdc.nal.usda.gov/food-details/{fdc_id}/nutrients",
+    "license": "USDA FoodData Central data are in the public domain (see https://fdc.nal.usda.gov/)",
+    "retrieved": "2026-07-31"
+  },
+  "units": {
+    "kcal": "kcal",
+    "protein_g": "g",
+    "carb_g": "g",
+    "fat_g": "g",
+    "fiber_g": "g",
+    "sodium_mg": "mg"
+  },
+  "foods": [
+    {
+      "id": "chicken_breast",
+      "name": "Chicken, broilers or fryers, breast, meat only, cooked, roasted",
+      "serving": {
+        "description": "0.5 breast, bone and skin removed",
+        "grams": 86.0
+      },
+      "per_serving": {
+        "kcal": 141.9,
+        "protein_g": 26.6772,
+        "carb_g": 0.0,
+        "fat_g": 3.0702,
+        "fiber_g": 0.0,
+        "sodium_mg": 63.64
+      },
+      "per_100g": {
+        "kcal": 165.0,
+        "protein_g": 31.02,
+        "carb_g": 0.0,
+        "fat_g": 3.57,
+        "fiber_g": 0.0,
+        "sodium_mg": 74.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 171477,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/171477/nutrients",
+        "serving_from": "USDA food_portion row: 0.5 breast, bone and skin removed = 86.0 g"
+      }
+    },
+    {
+      "id": "egg",
+      "name": "Egg, whole, cooked, hard-boiled",
+      "serving": {
+        "description": "1 large",
+        "grams": 50.0
+      },
+      "per_serving": {
+        "kcal": 77.5,
+        "protein_g": 6.29,
+        "carb_g": 0.56,
+        "fat_g": 5.305,
+        "fiber_g": 0.0,
+        "sodium_mg": 62.0
+      },
+      "per_100g": {
+        "kcal": 155.0,
+        "protein_g": 12.58,
+        "carb_g": 1.12,
+        "fat_g": 10.61,
+        "fiber_g": 0.0,
+        "sodium_mg": 124.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 173424,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/173424/nutrients",
+        "serving_from": "USDA food_portion row: 1 large = 50.0 g"
+      }
+    },
+    {
+      "id": "white_rice",
+      "name": "Rice, white, long-grain, regular, enriched, cooked",
+      "serving": {
+        "description": "1 cup",
+        "grams": 158.0
+      },
+      "per_serving": {
+        "kcal": 205.4,
+        "protein_g": 4.2502,
+        "carb_g": 44.5086,
+        "fat_g": 0.4424,
+        "fiber_g": 0.632,
+        "sodium_mg": 1.58
+      },
+      "per_100g": {
+        "kcal": 130.0,
+        "protein_g": 2.69,
+        "carb_g": 28.17,
+        "fat_g": 0.28,
+        "fiber_g": 0.4,
+        "sodium_mg": 1.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 168878,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/168878/nutrients",
+        "serving_from": "USDA food_portion row: 1 cup = 158.0 g"
+      }
+    },
+    {
+      "id": "lentils",
+      "name": "Lentils, mature seeds, cooked, boiled, without salt",
+      "serving": {
+        "description": "1 cup",
+        "grams": 198.0
+      },
+      "per_serving": {
+        "kcal": 229.68,
+        "protein_g": 17.8596,
+        "carb_g": 39.8574,
+        "fat_g": 0.7524,
+        "fiber_g": 15.642,
+        "sodium_mg": 3.96
+      },
+      "per_100g": {
+        "kcal": 116.0,
+        "protein_g": 9.02,
+        "carb_g": 20.13,
+        "fat_g": 0.38,
+        "fiber_g": 7.9,
+        "sodium_mg": 2.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 172421,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/172421/nutrients",
+        "serving_from": "USDA food_portion row: 1 cup = 198.0 g"
+      }
+    },
+    {
+      "id": "oats",
+      "name": "Cereals, oats, regular and quick, not fortified, dry",
+      "serving": {
+        "description": "1 cup",
+        "grams": 81.0
+      },
+      "per_serving": {
+        "kcal": 306.99,
+        "protein_g": 10.6515,
+        "carb_g": 54.837,
+        "fat_g": 5.2812,
+        "fiber_g": 8.181,
+        "sodium_mg": 4.86
+      },
+      "per_100g": {
+        "kcal": 379.0,
+        "protein_g": 13.15,
+        "carb_g": 67.7,
+        "fat_g": 6.52,
+        "fiber_g": 10.1,
+        "sodium_mg": 6.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 173904,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/173904/nutrients",
+        "serving_from": "USDA food_portion row: 1 cup = 81.0 g"
+      }
+    },
+    {
+      "id": "broccoli",
+      "name": "Broccoli, cooked, boiled, drained, without salt",
+      "serving": {
+        "description": "0.5 cup, chopped",
+        "grams": 78.0
+      },
+      "per_serving": {
+        "kcal": 27.3,
+        "protein_g": 1.8564,
+        "carb_g": 5.6004,
+        "fat_g": 0.3198,
+        "fiber_g": 2.574,
+        "sodium_mg": 31.98
+      },
+      "per_100g": {
+        "kcal": 35.0,
+        "protein_g": 2.38,
+        "carb_g": 7.18,
+        "fat_g": 0.41,
+        "fiber_g": 3.3,
+        "sodium_mg": 41.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 169967,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/169967/nutrients",
+        "serving_from": "USDA food_portion row: 0.5 cup, chopped = 78.0 g"
+      }
+    },
+    {
+      "id": "sweet_potato",
+      "name": "Sweet potato, cooked, baked in skin, flesh, without salt",
+      "serving": {
+        "description": "1 cup",
+        "grams": 200.0
+      },
+      "per_serving": {
+        "kcal": 180.0,
+        "protein_g": 4.02,
+        "carb_g": 41.42,
+        "fat_g": 0.3,
+        "fiber_g": 6.6,
+        "sodium_mg": 72.0
+      },
+      "per_100g": {
+        "kcal": 90.0,
+        "protein_g": 2.01,
+        "carb_g": 20.71,
+        "fat_g": 0.15,
+        "fiber_g": 3.3,
+        "sodium_mg": 36.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 168483,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/168483/nutrients",
+        "serving_from": "USDA food_portion row: 1 cup = 200.0 g"
+      }
+    },
+    {
+      "id": "olive_oil",
+      "name": "Oil, olive, salad or cooking",
+      "serving": {
+        "description": "1 tablespoon",
+        "grams": 13.5
+      },
+      "per_serving": {
+        "kcal": 119.34,
+        "protein_g": 0.0,
+        "carb_g": 0.0,
+        "fat_g": 13.5,
+        "fiber_g": 0.0,
+        "sodium_mg": 0.27
+      },
+      "per_100g": {
+        "kcal": 884.0,
+        "protein_g": 0.0,
+        "carb_g": 0.0,
+        "fat_g": 100.0,
+        "fiber_g": 0.0,
+        "sodium_mg": 2.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 171413,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/171413/nutrients",
+        "serving_from": "USDA food_portion row: 1 tablespoon = 13.5 g"
+      }
+    },
+    {
+      "id": "almonds",
+      "name": "Nuts, almonds",
+      "serving": {
+        "description": "1 oz (23 whole kernels)",
+        "grams": 28.35
+      },
+      "per_serving": {
+        "kcal": 164.1465,
+        "protein_g": 5.996,
+        "carb_g": 6.1094,
+        "fat_g": 14.1552,
+        "fiber_g": 3.5438,
+        "sodium_mg": 0.2835
+      },
+      "per_100g": {
+        "kcal": 579.0,
+        "protein_g": 21.15,
+        "carb_g": 21.55,
+        "fat_g": 49.93,
+        "fiber_g": 12.5,
+        "sodium_mg": 1.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 170567,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/170567/nutrients",
+        "serving_from": "USDA food_portion row: 1 oz (23 whole kernels) = 28.35 g"
+      }
+    },
+    {
+      "id": "greek_yogurt",
+      "name": "Yogurt, Greek, plain, nonfat (Includes foods for USDA's Food Distribution Program)",
+      "serving": {
+        "description": "1 container",
+        "grams": 170.0
+      },
+      "per_serving": {
+        "kcal": 100.3,
+        "protein_g": 17.323,
+        "carb_g": 6.12,
+        "fat_g": 0.663,
+        "fiber_g": 0.0,
+        "sodium_mg": 61.2
+      },
+      "per_100g": {
+        "kcal": 59.0,
+        "protein_g": 10.19,
+        "carb_g": 3.6,
+        "fat_g": 0.39,
+        "fiber_g": 0.0,
+        "sodium_mg": 36.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 170894,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/170894/nutrients",
+        "serving_from": "USDA food_portion row: 1 container = 170.0 g"
+      }
+    },
+    {
+      "id": "salmon",
+      "name": "Fish, salmon, Atlantic, farmed, cooked, dry heat",
+      "serving": {
+        "description": "3 oz",
+        "grams": 85.0
+      },
+      "per_serving": {
+        "kcal": 175.1,
+        "protein_g": 18.785,
+        "carb_g": 0.0,
+        "fat_g": 10.4975,
+        "fiber_g": 0.0,
+        "sodium_mg": 51.85
+      },
+      "per_100g": {
+        "kcal": 206.0,
+        "protein_g": 22.1,
+        "carb_g": 0.0,
+        "fat_g": 12.35,
+        "fiber_g": 0.0,
+        "sodium_mg": 61.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 175168,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/175168/nutrients",
+        "serving_from": "USDA food_portion row: 3 oz = 85.0 g"
+      }
+    },
+    {
+      "id": "black_beans",
+      "name": "Beans, black, mature seeds, cooked, boiled, without salt",
+      "serving": {
+        "description": "1 cup",
+        "grams": 172.0
+      },
+      "per_serving": {
+        "kcal": 227.04,
+        "protein_g": 15.2392,
+        "carb_g": 40.7812,
+        "fat_g": 0.9288,
+        "fiber_g": 14.964,
+        "sodium_mg": 1.72
+      },
+      "per_100g": {
+        "kcal": 132.0,
+        "protein_g": 8.86,
+        "carb_g": 23.71,
+        "fat_g": 0.54,
+        "fiber_g": 8.7,
+        "sodium_mg": 1.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 173735,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/173735/nutrients",
+        "serving_from": "USDA food_portion row: 1 cup = 172.0 g"
+      }
+    },
+    {
+      "id": "banana",
+      "name": "Bananas, raw",
+      "serving": {
+        "description": "1 medium (7\" to 7-7/8\" long)",
+        "grams": 118.0
+      },
+      "per_serving": {
+        "kcal": 105.02,
+        "protein_g": 1.2862,
+        "carb_g": 26.9512,
+        "fat_g": 0.3894,
+        "fiber_g": 3.068,
+        "sodium_mg": 1.18
+      },
+      "per_100g": {
+        "kcal": 89.0,
+        "protein_g": 1.09,
+        "carb_g": 22.84,
+        "fat_g": 0.33,
+        "fiber_g": 2.6,
+        "sodium_mg": 1.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 173944,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/173944/nutrients",
+        "serving_from": "USDA food_portion row: 1 medium (7\" to 7-7/8\" long) = 118.0 g"
+      }
+    },
+    {
+      "id": "tofu",
+      "name": "Tofu, raw, firm, prepared with calcium sulfate",
+      "serving": {
+        "description": "0.5 cup",
+        "grams": 126.0
+      },
+      "per_serving": {
+        "kcal": 181.44,
+        "protein_g": 21.7602,
+        "carb_g": 3.5028,
+        "fat_g": 10.9872,
+        "fiber_g": 2.898,
+        "sodium_mg": 17.64
+      },
+      "per_100g": {
+        "kcal": 144.0,
+        "protein_g": 17.27,
+        "carb_g": 2.78,
+        "fat_g": 8.72,
+        "fiber_g": 2.3,
+        "sodium_mg": 14.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 172475,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/172475/nutrients",
+        "serving_from": "USDA food_portion row: 0.5 cup = 126.0 g"
+      }
+    },
+    {
+      "id": "spinach",
+      "name": "Spinach, raw",
+      "serving": {
+        "description": "1 cup",
+        "grams": 30.0
+      },
+      "per_serving": {
+        "kcal": 6.9,
+        "protein_g": 0.858,
+        "carb_g": 1.089,
+        "fat_g": 0.117,
+        "fiber_g": 0.66,
+        "sodium_mg": 23.7
+      },
+      "per_100g": {
+        "kcal": 23.0,
+        "protein_g": 2.86,
+        "carb_g": 3.63,
+        "fat_g": 0.39,
+        "fiber_g": 2.2,
+        "sodium_mg": 79.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 168462,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/168462/nutrients",
+        "serving_from": "USDA food_portion row: 1 cup = 30.0 g"
+      }
+    },
+    {
+      "id": "cottage_cheese",
+      "name": "Cheese, cottage, lowfat, 1% milkfat",
+      "serving": {
+        "description": "4 oz",
+        "grams": 113.0
+      },
+      "per_serving": {
+        "kcal": 81.36,
+        "protein_g": 14.0007,
+        "carb_g": 3.0736,
+        "fat_g": 1.1526,
+        "fiber_g": 0.0,
+        "sodium_mg": 458.78
+      },
+      "per_100g": {
+        "kcal": 72.0,
+        "protein_g": 12.39,
+        "carb_g": 2.72,
+        "fat_g": 1.02,
+        "fiber_g": 0.0,
+        "sodium_mg": 406.0
+      },
+      "source": {
+        "database": "USDA FoodData Central, SR Legacy",
+        "fdc_id": 173417,
+        "data_type": "sr_legacy_food",
+        "publication_date": "2019-04-01",
+        "url": "https://fdc.nal.usda.gov/food-details/173417/nutrients",
+        "serving_from": "USDA food_portion row: 4 oz = 113.0 g"
+      }
+    }
+  ]
+};
+/* FOOD_TABLE:END */
+</script>
+
+<script>
+"use strict";
+
+const MACRO_KEYS = ["kcal", "protein_g", "carb_g", "fat_g", "fiber_g", "sodium_mg"];
+const MACRO_LABELS = {
+  kcal: "energy (kcal)",
+  protein_g: "protein (g)",
+  carb_g: "carbohydrate (g)",
+  fat_g: "fat (g)",
+  fiber_g: "fibre (g)",
+  sodium_mg: "sodium (mg)"
+};
+const EPS = 1e-9;
+const DISTINCT_PENALTY = 25;
+
+const FOODS = {};
+for (const row of FOOD_TABLE.foods || []) FOODS[row.id] = row;
+
+/* ---------------------------------------------------------------- targets */
+
+function allowanceOf(spec) {
+  const a = Number(spec.tol_abs || 0);
+  const p = Number(spec.target) * Number(spec.tol_pct || 0) / 100;
+  return Math.max(a, p);
+}
+function windowOf(spec) {
+  const mode = spec.mode || "band";
+  const allow = allowanceOf(spec);
+  return {
+    lo: mode === "max" ? -Infinity : Number(spec.target) - allow,
+    hi: mode === "min" ? Infinity : Number(spec.target) + allow,
+    allowance: allow,
+    mode: mode
+  };
+}
+function deviationOf(spec, value) {
+  const w = windowOf(spec);
+  if (value < w.lo - EPS) return w.lo - value;
+  if (value > w.hi + EPS) return value - w.hi;
+  return 0;
+}
+
+/* ------------------------------------------------------------------- rng */
+
+function mulberry32(seed) {
+  let a = (seed >>> 0) || 1;
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/* ---------------------------------------------------------------- bounds */
+
+function capFor(inst, foodId) {
+  const slots = inst.days * inst.meals_per_day;
+  const caps = inst.frequency_caps || {};
+  return Object.prototype.hasOwnProperty.call(caps, foodId) ? Number(caps[foodId]) : slots;
+}
+
+function greedyExtreme(inst, key, maximise) {
+  const slots = inst.days * inst.meals_per_day;
+  const budget = maximise ? slots * inst.max_foods_per_meal : slots;
+  const per = maximise ? inst.max_servings_per_food_in_meal : 1;
+  const order = inst.pantry.slice().sort((x, y) => {
+    const ax = FOODS[x].per_serving[key], ay = FOODS[y].per_serving[key];
+    if (ax !== ay) return maximise ? ay - ax : ax - ay;
+    return x < y ? -1 : 1;
+  });
+  let total = 0, left = budget;
+  const picks = [];
+  for (const f of order) {
+    if (left <= 0) break;
+    const take = Math.min(capFor(inst, f), left);
+    if (take <= 0) continue;
+    const contribution = take * per * FOODS[f].per_serving[key];
+    total += contribution;
+    picks.push({ food: f, appearances: take, servings_each: per,
+                 contributes: Math.round(contribution * 1e4) / 1e4 });
+    left -= take;
+  }
+  return { total: total, picks: picks };
+}
+
+function combinations(n, k) {
+  if (k < 0 || k > n) return 0;
+  let r = 1;
+  for (let i = 1; i <= k; i++) r = r * (n - k + i) / i;
+  return Math.round(r);
+}
+
+function fmt(x) {
+  return x.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+}
+
+function certificates(inst) {
+  const out = [];
+  const slots = inst.days * inst.meals_per_day;
+  const usable = inst.pantry.filter(f => capFor(inst, f) >= 1);
+  let appearances = 0;
+  for (const f of inst.pantry) appearances += Math.min(capFor(inst, f), slots);
+
+  if (appearances < slots) {
+    out.push({
+      constraint: "frequency_caps:capacity",
+      message: "the plan has " + slots + " meal slots and each one needs at least one " +
+               "food, but the frequency caps allow only " + appearances + " food " +
+               "appearances in total across the week, short by " + (slots - appearances),
+      detail: { slots: slots, appearances_allowed: appearances, shortfall: slots - appearances }
+    });
+  }
+  if (usable.length < inst.min_distinct_foods) {
+    out.push({
+      constraint: "variety:min_distinct_foods",
+      message: "the plan must use at least " + inst.min_distinct_foods +
+               " distinct foods, but only " + usable.length + " foods in the pantry have " +
+               "a frequency cap above zero, short by " + (inst.min_distinct_foods - usable.length),
+      detail: { required: inst.min_distinct_foods, available: usable.length }
+    });
+  }
+  const appearanceBudget = slots * inst.max_foods_per_meal;
+  if (inst.min_distinct_foods > appearanceBudget) {
+    out.push({
+      constraint: "variety:min_distinct_foods_vs_slots",
+      message: "the plan must use at least " + inst.min_distinct_foods + " distinct foods, but " +
+               slots + " meal slots holding at most " + inst.max_foods_per_meal +
+               " foods each leave room for only " + appearanceBudget + " food appearances",
+      detail: { required: inst.min_distinct_foods, appearance_budget: appearanceBudget }
+    });
+  }
+  const neededMeals = Math.ceil(slots / inst.max_meal_repeats);
+  let possible = 0;
+  for (let k = 1; k <= Math.min(inst.max_foods_per_meal, inst.pantry.length); k++) {
+    possible += combinations(inst.pantry.length, k) *
+                Math.pow(inst.max_servings_per_food_in_meal, k);
+  }
+  if (possible < neededMeals) {
+    out.push({
+      constraint: "variety:max_meal_repeats",
+      message: "no meal may repeat more than " + inst.max_meal_repeats + " times, so " +
+               slots + " slots need at least " + neededMeals + " distinct meals, but this " +
+               "pantry can only express " + possible,
+      detail: { distinct_meals_needed: neededMeals, distinct_meals_possible: possible }
+    });
+  }
+
+  for (const key of Object.keys(inst.targets)) {
+    const spec = inst.targets[key];
+    const w = windowOf(spec);
+    const label = MACRO_LABELS[key] || key;
+    if (w.lo !== -Infinity) {
+      const c = greedyExtreme(inst, key, true);
+      const needWeek = w.lo * inst.days;
+      if (c.total < needWeek - EPS) {
+        out.push({
+          constraint: "macro:" + key + ":below_target",
+          message: label + " target needs at least " + fmt(w.lo) + " per day (" +
+                   fmt(needWeek) + " across " + inst.days + " days), but the pantry's " +
+                   "maximum under the frequency caps and the " + inst.max_foods_per_meal +
+                   " foods per meal limit is " + fmt(c.total / inst.days) + " per day (" +
+                   fmt(c.total) + " across " + inst.days + " days), short by " +
+                   fmt((needWeek - c.total) / inst.days) + " per day",
+          detail: {
+            macro: key,
+            required_per_day: w.lo,
+            max_achievable_per_day: c.total / inst.days,
+            shortfall_per_day: (needWeek - c.total) / inst.days,
+            required_per_plan: needWeek,
+            max_achievable_per_plan: c.total,
+            binding_picks: c.picks
+          }
+        });
+      }
+    }
+    if (w.hi !== Infinity) {
+      const c = greedyExtreme(inst, key, false);
+      const allowWeek = w.hi * inst.days;
+      if (c.total > allowWeek + EPS) {
+        out.push({
+          constraint: "macro:" + key + ":above_target",
+          message: label + " target allows at most " + fmt(w.hi) + " per day (" +
+                   fmt(allowWeek) + " across " + inst.days + " days), but every meal slot " +
+                   "needs at least one food, so the smallest total this pantry can produce " +
+                   "is " + fmt(c.total / inst.days) + " per day (" + fmt(c.total) +
+                   " across " + inst.days + " days), over by " +
+                   fmt((c.total - allowWeek) / inst.days) + " per day",
+          detail: {
+            macro: key,
+            allowed_per_day: w.hi,
+            min_achievable_per_day: c.total / inst.days,
+            excess_per_day: (c.total - allowWeek) / inst.days,
+            allowed_per_plan: allowWeek,
+            min_achievable_per_plan: c.total,
+            binding_picks: c.picks
+          }
+        });
+      }
+    }
+  }
+  return out;
+}
+
+function headroom(inst) {
+  const out = {};
+  for (const key of Object.keys(inst.targets)) {
+    const w = windowOf(inst.targets[key]);
+    out[key] = {
+      min_achievable_per_day: greedyExtreme(inst, key, false).total / inst.days,
+      max_achievable_per_day: greedyExtreme(inst, key, true).total / inst.days,
+      target_low_per_day: w.lo,
+      target_high_per_day: w.hi
+    };
+  }
+  return out;
+}
+
+/* ---------------------------------------------------------------- search */
+
+function buildCandidates(inst, rng, maxCandidates) {
+  const pantry = inst.pantry.filter(f => capFor(inst, f) >= 1).slice().sort();
+  const meals = [];
+  const maxK = Math.min(inst.max_foods_per_meal, pantry.length);
+  const V = inst.max_servings_per_food_in_meal;
+
+  function combo(start, chosen) {
+    if (chosen.length > 0) {
+      const counts = new Array(chosen.length).fill(1);
+      while (true) {
+        meals.push(chosen.map((f, i) => [f, counts[i]]));
+        let i = chosen.length - 1;
+        while (i >= 0 && counts[i] === V) { counts[i] = 1; i--; }
+        if (i < 0) break;
+        counts[i]++;
+      }
+    }
+    if (chosen.length === maxK) return;
+    for (let i = start; i < pantry.length; i++) {
+      chosen.push(pantry[i]);
+      combo(i + 1, chosen);
+      chosen.pop();
+    }
+  }
+  combo(0, []);
+
+  if (meals.length > maxCandidates) {
+    const singles = meals.filter(m => m.length === 1);
+    const rest = meals.filter(m => m.length > 1);
+    const keep = Math.max(0, maxCandidates - singles.length);
+    for (let i = rest.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1));
+      const t = rest[i]; rest[i] = rest[j]; rest[j] = t;
+    }
+    return singles.concat(rest.slice(0, keep));
+  }
+  return meals;
+}
+
+function mealKey(items) {
+  return items.slice().sort((a, b) => (a[0] < b[0] ? -1 : 1))
+              .map(it => it[0] + "x" + it[1]).join(" | ");
+}
+
+function Search(inst, cands) {
+  this.inst = inst;
+  this.keys = Object.keys(inst.targets).sort();
+  this.cands = cands;
+  this.vecs = cands.map(m => this.keys.map(k => {
+    let s = 0;
+    for (const it of m) s += FOODS[it[0]].per_serving[k] * it[1];
+    return s;
+  }));
+  this.foods = cands.map(m => m.map(it => it[0]));
+  this.targets = this.keys.map(k => Number(inst.targets[k].target));
+  this.scale = this.targets.map(t => Math.max(Math.abs(t), 1));
+  this.modes = this.keys.map(k => inst.targets[k].mode || "band");
+  this.lows = this.keys.map(k => windowOf(inst.targets[k]).lo);
+  this.highs = this.keys.map(k => windowOf(inst.targets[k]).hi);
+  this.slots = inst.days * inst.meals_per_day;
+}
+
+Search.prototype.dayError = function (totals) {
+  let e = 0;
+  for (let i = 0; i < totals.length; i++) {
+    const x = totals[i];
+    let outside = 0;
+    if (x < this.lows[i]) outside = this.lows[i] - x;
+    else if (x > this.highs[i]) outside = x - this.highs[i];
+    let d = x - this.targets[i];
+    if (this.modes[i] === "min") d = Math.min(d, 0);
+    else if (this.modes[i] === "max") d = Math.max(d, 0);
+    e += (outside + 0.02 * Math.abs(d)) / this.scale[i];
+  }
+  return e;
+};
+
+Search.prototype.dayTotals = function (plan, day) {
+  const s = this.inst.meals_per_day;
+  const out = new Array(this.keys.length).fill(0);
+  for (let idx = day * s; idx < day * s + s; idx++) {
+    const v = this.vecs[plan[idx]];
+    for (let i = 0; i < out.length; i++) out[i] += v[i];
+  }
+  return out;
+};
+
+Search.prototype.bookkeeping = function (plan) {
+  const usage = new Map(), repeats = new Map();
+  for (const ci of plan) {
+    repeats.set(ci, (repeats.get(ci) || 0) + 1);
+    for (const f of this.foods[ci]) usage.set(f, (usage.get(f) || 0) + 1);
+  }
+  return { usage: usage, repeats: repeats };
+};
+
+Search.prototype.hardOk = function (plan) {
+  const b = this.bookkeeping(plan);
+  for (const [ci, n] of b.repeats) if (n > this.inst.max_meal_repeats) return false;
+  for (const [f, n] of b.usage) if (n > capFor(this.inst, f)) return false;
+  return true;
+};
+
+Search.prototype.feasible = function (plan) {
+  if (!this.hardOk(plan)) return false;
+  const b = this.bookkeeping(plan);
+  if (b.usage.size < this.inst.min_distinct_foods) return false;
+  for (let d = 0; d < this.inst.days; d++) {
+    const t = this.dayTotals(plan, d);
+    for (let i = 0; i < this.keys.length; i++) {
+      if (deviationOf(this.inst.targets[this.keys[i]], t[i]) > 0) return false;
+    }
+  }
+  return true;
+};
+
+Search.prototype.fitsEmptySlot = function (ci, usage, repeats) {
+  if ((repeats.get(ci) || 0) + 1 > this.inst.max_meal_repeats) return false;
+  for (const f of this.foods[ci]) {
+    if ((usage.get(f) || 0) + 1 > capFor(this.inst, f)) return false;
+  }
+  return true;
+};
+
+Search.prototype.allowed = function (ci, cur, usage, repeats) {
+  if (ci === cur) return true;
+  if ((repeats.get(ci) || 0) + 1 > this.inst.max_meal_repeats) return false;
+  const curFoods = this.foods[cur];
+  for (const f of this.foods[ci]) {
+    if (curFoods.indexOf(f) !== -1) continue;
+    if ((usage.get(f) || 0) + 1 > capFor(this.inst, f)) return false;
+  }
+  return true;
+};
+
+Search.prototype.distinctPenalty = function (count) {
+  const short = this.inst.min_distinct_foods - count;
+  return short > 0 ? DISTINCT_PENALTY * short : 0;
+};
+
+Search.prototype.distinctAfterSwap = function (usage, curFoods, newFoods) {
+  let d = usage.size;
+  for (const f of curFoods) {
+    if (newFoods.indexOf(f) === -1 && usage.get(f) === 1) d -= 1;
+  }
+  for (const f of newFoods) {
+    if (curFoods.indexOf(f) === -1 && !(usage.get(f) > 0)) d += 1;
+  }
+  return d;
+};
+
+Search.prototype.construct = function (rng) {
+  const s = this.inst.meals_per_day;
+  const plan = [];
+  const usage = new Map(), repeats = new Map();
+  for (let day = 0; day < this.inst.days; day++) {
+    const running = new Array(this.keys.length).fill(0);
+    for (let j = 0; j < s; j++) {
+      const left = s - j;
+      const want = this.targets.map((t, i) => (t - running[i]) / left);
+      const scored = [];
+      for (let ci = 0; ci < this.cands.length; ci++) {
+        if (!this.fitsEmptySlot(ci, usage, repeats)) continue;
+        const v = this.vecs[ci];
+        let err = 0;
+        for (let i = 0; i < want.length; i++) err += Math.abs(v[i] - want[i]) / this.scale[i];
+        scored.push([err, ci]);
+      }
+      if (!scored.length) return null;
+      scored.sort((a, b) => (a[0] - b[0]) || (a[1] - b[1]));
+      const top = scored.slice(0, Math.max(1, Math.min(8, scored.length)));
+      const choice = top[Math.floor(rng() * top.length)][1];
+      plan.push(choice);
+      repeats.set(choice, (repeats.get(choice) || 0) + 1);
+      for (const f of this.foods[choice]) usage.set(f, (usage.get(f) || 0) + 1);
+      const v = this.vecs[choice];
+      for (let i = 0; i < running.length; i++) running[i] += v[i];
+    }
+  }
+  return plan;
+};
+
+Search.prototype.apply = function (plan, slot, newIdx, usage, repeats) {
+  const old = plan[slot];
+  repeats.set(old, repeats.get(old) - 1);
+  if (repeats.get(old) === 0) repeats.delete(old);
+  for (const f of this.foods[old]) {
+    usage.set(f, usage.get(f) - 1);
+    if (usage.get(f) === 0) usage.delete(f);
+  }
+  plan[slot] = newIdx;
+  repeats.set(newIdx, (repeats.get(newIdx) || 0) + 1);
+  for (const f of this.foods[newIdx]) usage.set(f, (usage.get(f) || 0) + 1);
+};
+
+Search.prototype.localSearch = function (plan, maxSweeps) {
+  const b = this.bookkeeping(plan);
+  const usage = b.usage, repeats = b.repeats;
+  const s = this.inst.meals_per_day;
+  const dayErr = [];
+  for (let d = 0; d < this.inst.days; d++) dayErr.push(this.dayError(this.dayTotals(plan, d)));
+  let best = dayErr.reduce((a, x) => a + x, 0) + this.distinctPenalty(usage.size);
+
+  for (let sweep = 0; sweep < maxSweeps; sweep++) {
+    let improved = false;
+
+    for (let slot = 0; slot < plan.length; slot++) {
+      if (this.feasible(plan)) return { plan: plan, value: best };
+      const day = Math.floor(slot / s);
+      const rest = new Array(this.keys.length).fill(0);
+      for (let idx = day * s; idx < day * s + s; idx++) {
+        if (idx === slot) continue;
+        const v = this.vecs[plan[idx]];
+        for (let i = 0; i < rest.length; i++) rest[i] += v[i];
+      }
+      const otherDays = best - dayErr[day] - this.distinctPenalty(usage.size);
+      const cur = plan[slot];
+      const curFoods = this.foods[cur];
+      let bestIdx = cur, bestVal = best, bestErr = dayErr[day];
+      for (let ci = 0; ci < this.cands.length; ci++) {
+        if (!this.allowed(ci, cur, usage, repeats)) continue;
+        const v = this.vecs[ci];
+        const tot = rest.map((x, i) => x + v[i]);
+        const err = this.dayError(tot);
+        const val = otherDays + err +
+          this.distinctPenalty(this.distinctAfterSwap(usage, curFoods, this.foods[ci]));
+        if (val < bestVal - EPS) { bestIdx = ci; bestVal = val; bestErr = err; }
+      }
+      if (bestIdx !== cur) {
+        this.apply(plan, slot, bestIdx, usage, repeats);
+        dayErr[day] = bestErr;
+        best = bestVal;
+        improved = true;
+      }
+    }
+
+    for (let a = 0; a < plan.length; a++) {
+      const da = Math.floor(a / s);
+      for (let bIdx = a + 1; bIdx < plan.length; bIdx++) {
+        const db = Math.floor(bIdx / s);
+        if (da === db || plan[a] === plan[bIdx]) continue;
+        const ta = this.dayTotals(plan, da), tb = this.dayTotals(plan, db);
+        const va = this.vecs[plan[a]], vb = this.vecs[plan[bIdx]];
+        const na = ta.map((x, i) => x - va[i] + vb[i]);
+        const nb = tb.map((x, i) => x - vb[i] + va[i]);
+        const ea = this.dayError(na), eb = this.dayError(nb);
+        const delta = (ea + eb) - (dayErr[da] + dayErr[db]);
+        if (delta < -EPS) {
+          const t = plan[a]; plan[a] = plan[bIdx]; plan[bIdx] = t;
+          dayErr[da] = ea; dayErr[db] = eb;
+          best += delta;
+          improved = true;
+          if (this.feasible(plan)) return { plan: plan, value: best };
+        }
+      }
+    }
+
+    if (!improved) break;
+  }
+  return { plan: plan, value: best };
+};
+
+/* ----------------------------------------------------------------- solve */
+
+function normaliseInstance(spec) {
+  const inst = {
+    pantry: spec.pantry.slice(),
+    days: Number(spec.days || 7),
+    meals_per_day: Number(spec.meals_per_day || 3),
+    max_foods_per_meal: Number(spec.max_foods_per_meal || 3),
+    max_servings_per_food_in_meal: Number(spec.max_servings_per_food_in_meal || 2),
+    targets: {},
+    frequency_caps: {},
+    max_meal_repeats: Number(spec.max_meal_repeats || 3),
+    min_distinct_foods: Number(spec.min_distinct_foods || 0),
+    seed: Number(spec.seed || 0)
+  };
+  for (const key of Object.keys(spec.targets)) {
+    const t = spec.targets[key];
+    inst.targets[key] = {
+      key: key,
+      target: Number(t.target),
+      tol_abs: Number(t.tol_abs || 0),
+      tol_pct: Number(t.tol_pct || 0),
+      mode: t.mode || "band"
+    };
+  }
+  for (const key of Object.keys(spec.frequency_caps || {})) {
+    inst.frequency_caps[key] = Number(spec.frequency_caps[key]);
+  }
+  return inst;
+}
+
+function validate(inst) {
+  const problems = [];
+  if (!inst.pantry.length) problems.push("the pantry is empty, so there is nothing to cook with");
+  for (const f of inst.pantry) if (!FOODS[f]) problems.push("unknown food " + f);
+  if (!Object.keys(inst.targets).length) {
+    problems.push("no macro targets were given, so there is nothing to solve for");
+  }
+  for (const key of Object.keys(inst.targets)) {
+    const t = inst.targets[key];
+    if (!isFinite(t.target)) problems.push("the " + key + " target is not a number");
+    if (t.target < 0) problems.push("the " + key + " target is negative");
+  }
+  return problems;
+}
+
+function solve(spec, opts) {
+  opts = opts || {};
+  const restarts = opts.restarts || 4;
+  const maxSweeps = opts.maxSweeps || 10;
+  const inst = normaliseInstance(spec);
+
+  const problems = validate(inst);
+  if (problems.length) return { status: "bad_request", problems: problems, instance: inst };
+
+  const certs = certificates(inst);
+  if (certs.length) {
+    return {
+      status: "proven_infeasible", instance: inst, certificates: certs, plan: null,
+      notes: {
+        why: "a relaxation of this instance already cannot reach the target, so no plan exists",
+        headroom: headroom(inst)
+      }
+    };
+  }
+
+  const rng = mulberry32(inst.seed);
+  const cands = buildCandidates(inst, rng, 8000);
+  if (!cands.length) {
+    return {
+      status: "proven_infeasible", instance: inst, plan: null,
+      certificates: [{
+        constraint: "pantry:empty",
+        message: "no food in the pantry has a frequency cap above zero, so no meal can be built at all",
+        detail: {}
+      }],
+      notes: {}
+    };
+  }
+
+  const search = new Search(inst, cands);
+  let bestPlan = null, bestVal = Infinity;
+  for (let r = 0; r < restarts; r++) {
+    const rr = mulberry32((inst.seed * 1000003 + r) >>> 0);
+    const start = search.construct(rr);
+    if (!start) continue;
+    const res = search.localSearch(start, maxSweeps);
+    if (search.feasible(res.plan)) {
+      return {
+        status: "solved", instance: inst, certificates: [],
+        plan: res.plan.map(ci => cands[ci]),
+        notes: { restarts_used: r + 1, objective: res.value }
+      };
+    }
+    if (res.value < bestVal) { bestVal = res.value; bestPlan = res.plan.slice(); }
+  }
+
+  const notes = {
+    why: "the search did not find a plan meeting every constraint. This is not a proof " +
+         "that none exists; no bound was violated.",
+    restarts_used: restarts,
+    best_objective: bestPlan ? bestVal : null,
+    headroom: headroom(inst),
+    closest_misses: []
+  };
+  if (bestPlan) {
+    for (let d = 0; d < inst.days; d++) {
+      const t = search.dayTotals(bestPlan, d);
+      for (let i = 0; i < search.keys.length; i++) {
+        const key = search.keys[i];
+        const dev = deviationOf(inst.targets[key], t[i]);
+        if (dev > 0) {
+          notes.closest_misses.push({
+            day: d + 1, macro: key,
+            achieved: Math.round(t[i] * 100) / 100,
+            target: inst.targets[key].target,
+            outside_band_by: Math.round(dev * 100) / 100
+          });
+        }
+      }
+    }
+  }
+  return {
+    status: "not_found", instance: inst, certificates: [],
+    plan: bestPlan ? bestPlan.map(ci => cands[ci]) : null,
+    notes: notes
+  };
+}
+
+/* ------------------------------------------------------- result document */
+/* Same shape as macrosolver/report.py, so checker/independent_check.py can be
+   pointed straight at whatever this page produces. */
+
+function buildDocument(result) {
+  const inst = result.instance;
+  const doc = {
+    tool: "macro-solver",
+    produced_by: "docs/index.html",
+    framing: "The targets below were supplied by the person running this tool or copied " +
+             "by them from their clinician. This tool does not choose targets, does not " +
+             "check whether they are appropriate for anyone, and is not nutrition advice.",
+    food_table: "data/foods.json",
+    food_table_source: FOOD_TABLE.dataset || {},
+    instance: {
+      pantry: inst.pantry.slice(),
+      days: inst.days,
+      meals_per_day: inst.meals_per_day,
+      max_foods_per_meal: inst.max_foods_per_meal,
+      max_servings_per_food_in_meal: inst.max_servings_per_food_in_meal,
+      targets: inst.targets,
+      frequency_caps: inst.frequency_caps,
+      max_meal_repeats: inst.max_meal_repeats,
+      min_distinct_foods: inst.min_distinct_foods,
+      seed: inst.seed
+    },
+    status: result.status,
+    notes: result.notes || {},
+    certificates: result.certificates || []
+  };
+  if (!result.plan) return doc;
+
+  const s = inst.meals_per_day;
+  const days = [];
+  for (let d = 0; d < inst.days; d++) {
+    const meals = [];
+    for (let j = 0; j < s; j++) {
+      meals.push({
+        slot: j + 1,
+        items: result.plan[d * s + j].map(it => ({ food_id: it[0], servings: it[1] }))
+      });
+    }
+    days.push({ day: d + 1, meals: meals });
+  }
+  doc.plan = { days: days };
+
+  const perDay = [];
+  for (let d = 0; d < inst.days; d++) {
+    const totals = {};
+    for (let j = 0; j < s; j++) {
+      for (const it of result.plan[d * s + j]) {
+        for (const k of MACRO_KEYS) {
+          totals[k] = (totals[k] || 0) + FOODS[it[0]].per_serving[k] * it[1];
+        }
+      }
+    }
+    const macros = {};
+    for (const key of Object.keys(inst.targets)) {
+      const spec = inst.targets[key];
+      const w = windowOf(spec);
+      const achieved = totals[key] || 0;
+      const dev = deviationOf(spec, achieved);
+      macros[key] = {
+        label: MACRO_LABELS[key] || key,
+        target: spec.target,
+        achieved: Math.round(achieved * 1000) / 1000,
+        error: Math.round((achieved - spec.target) * 1000) / 1000,
+        allowance: Math.round(w.allowance * 1000) / 1000,
+        mode: spec.mode,
+        outside_band_by: Math.round(dev * 1000) / 1000,
+        met: dev === 0
+      };
+    }
+    perDay.push({ day: d + 1, macros: macros });
+  }
+  doc.per_day = perDay;
+
+  const usage = {}, repeats = {};
+  for (const meal of result.plan) {
+    const label = meal.map(it => (it[1] > 1 ? it[1] + "x " + it[0] : it[0])).join(" + ");
+    repeats[label] = (repeats[label] || 0) + 1;
+    for (const it of meal) usage[it[0]] = (usage[it[0]] || 0) + 1;
+  }
+  const sortedUsage = {};
+  for (const k of Object.keys(usage).sort()) sortedUsage[k] = usage[k];
+  doc.food_usage = sortedUsage;
+  doc.meal_repeats = repeats;
+  doc.distinct_foods = Object.keys(usage).length;
+  doc.status_all_targets_met = perDay.every(
+    d => Object.keys(d.macros).every(k => d.macros[k].met)
+  );
+  return doc;
+}
+
+/* -------------------------------------------------------------------- ui */
+
+const TARGET_DEFAULTS = [
+  { key: "kcal",      target: 2150, tol_abs: 0,  tol_pct: 5, mode: "band" },
+  { key: "protein_g", target: 150,  tol_abs: 12, tol_pct: 0, mode: "band" },
+  { key: "carb_g",    target: 220,  tol_abs: 30, tol_pct: 0, mode: "band" },
+  { key: "fat_g",     target: 70,   tol_abs: 12, tol_pct: 0, mode: "band" },
+  { key: "fiber_g",   target: 0,    tol_abs: 0,  tol_pct: 0, mode: "off" },
+  { key: "sodium_mg", target: 0,    tol_abs: 0,  tol_pct: 0, mode: "off" }
+];
+
+const PANTRY_DEFAULT_CAPS = { chicken_breast: 5, salmon: 3, egg: 6, olive_oil: 7 };
+
+function el(tag, attrs, kids) {
+  const n = document.createElement(tag);
+  if (attrs) for (const k of Object.keys(attrs)) {
+    if (k === "class") n.className = attrs[k];
+    else if (k === "text") n.textContent = attrs[k];
+    else n.setAttribute(k, attrs[k]);
+  }
+  for (const kid of kids || []) n.appendChild(kid);
+  return n;
+}
+
+function renderTargetControls() {
+  const host = document.getElementById("targets");
+  host.textContent = "";
+  for (const t of TARGET_DEFAULTS) {
+    const fs = el("fieldset");
+    fs.appendChild(el("legend", { text: MACRO_LABELS[t.key] }));
+
+    const row1 = el("div", { class: "row" });
+    const d1 = el("div");
+    d1.appendChild(el("label", { text: "Target", for: "t-" + t.key }));
+    const inTarget = el("input", { type: "number", id: "t-" + t.key, step: "1", min: "0" });
+    inTarget.value = String(t.target);
+    d1.appendChild(inTarget);
+    const d2 = el("div");
+    d2.appendChild(el("label", { text: "Mode", for: "m-" + t.key }));
+    const sel = el("select", { id: "m-" + t.key });
+    for (const [v, txt] of [["off", "not used"], ["band", "within tolerance"],
+                            ["min", "at least"], ["max", "at most"]]) {
+      const o = el("option", { value: v, text: txt });
+      if (v === t.mode) o.setAttribute("selected", "selected");
+      sel.appendChild(o);
+    }
+    d2.appendChild(sel);
+    row1.appendChild(d1); row1.appendChild(d2);
+
+    const row2 = el("div", { class: "row" });
+    row2.style.marginTop = "8px";
+    const d3 = el("div");
+    d3.appendChild(el("label", { text: "Tolerance, absolute", for: "a-" + t.key }));
+    const inAbs = el("input", { type: "number", id: "a-" + t.key, step: "1", min: "0" });
+    inAbs.value = String(t.tol_abs);
+    d3.appendChild(inAbs);
+    const d4 = el("div");
+    d4.appendChild(el("label", { text: "Tolerance, percent", for: "p-" + t.key }));
+    const inPct = el("input", { type: "number", id: "p-" + t.key, step: "0.5", min: "0" });
+    inPct.value = String(t.tol_pct);
+    d4.appendChild(inPct);
+    row2.appendChild(d3); row2.appendChild(d4);
+
+    fs.appendChild(row1);
+    fs.appendChild(row2);
+    host.appendChild(fs);
+  }
+}
+
+function renderPantryControls() {
+  const host = document.getElementById("pantry");
+  host.textContent = "";
+  const slots = 21;
+  for (const id of Object.keys(FOODS)) {
+    const food = FOODS[id];
+    const wrap = el("div", { class: "pantry-item" });
+    const cb = el("input", { type: "checkbox", id: "f-" + id });
+    cb.checked = true;
+    const name = el("span", { class: "nm", text: id.replace(/_/g, " ") });
+    name.title = food.name;
+    const cap = el("input", { type: "number", id: "c-" + id, min: "0", max: "60",
+                              "aria-label": "meal slots per week for " + id });
+    cap.value = String(PANTRY_DEFAULT_CAPS[id] !== undefined ? PANTRY_DEFAULT_CAPS[id] : slots);
+    const lab = el("label", { for: "f-" + id, class: "sr-only", text: "include " + id });
+    wrap.appendChild(cb); wrap.appendChild(name); wrap.appendChild(cap);
+    wrap.appendChild(lab);
+    host.appendChild(wrap);
+  }
+}
+
+function renderFoodTable() {
+  const tbody = document.querySelector("#food-table tbody");
+  tbody.textContent = "";
+  for (const id of Object.keys(FOODS)) {
+    const f = FOODS[id];
+    const tr = el("tr");
+    tr.appendChild(el("td", { text: id.replace(/_/g, " ") }));
+    tr.appendChild(el("td", { text: f.serving.description + " (" + f.serving.grams + " g)" }));
+    for (const k of MACRO_KEYS) {
+      tr.appendChild(el("td", { class: "num", text: f.per_serving[k].toFixed(1) }));
+    }
+    const td = el("td");
+    const a = el("a", { href: f.source.url, rel: "noreferrer" });
+    a.textContent = "FDC " + f.source.fdc_id;
+    td.appendChild(a);
+    td.appendChild(document.createTextNode(" "));
+    const small = el("span", { class: "sub", text: f.name });
+    small.style.fontSize = "0.8rem";
+    td.appendChild(small);
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+  }
+  const ds = FOOD_TABLE.dataset || {};
+  document.getElementById("dataset-note").textContent =
+    "Source: " + (ds.name || "USDA FoodData Central") + ", " +
+    (ds.distribution || "") + ", retrieved " + (ds.retrieved || "") + ". " +
+    (ds.license || "");
+}
+
+function readSpec() {
+  const pantry = [], caps = {};
+  for (const id of Object.keys(FOODS)) {
+    if (!document.getElementById("f-" + id).checked) continue;
+    pantry.push(id);
+    caps[id] = Number(document.getElementById("c-" + id).value);
+  }
+  const targets = {};
+  for (const t of TARGET_DEFAULTS) {
+    const mode = document.getElementById("m-" + t.key).value;
+    if (mode === "off") continue;
+    targets[t.key] = {
+      target: Number(document.getElementById("t-" + t.key).value),
+      tol_abs: Number(document.getElementById("a-" + t.key).value),
+      tol_pct: Number(document.getElementById("p-" + t.key).value),
+      mode: mode
+    };
+  }
+  return {
+    pantry: pantry,
+    days: Number(document.getElementById("days").value),
+    meals_per_day: Number(document.getElementById("mpd").value),
+    max_foods_per_meal: Number(document.getElementById("fpm").value),
+    max_servings_per_food_in_meal: Number(document.getElementById("spf").value),
+    targets: targets,
+    frequency_caps: caps,
+    max_meal_repeats: Number(document.getElementById("repeats").value),
+    min_distinct_foods: Number(document.getElementById("distinct").value),
+    seed: Number(document.getElementById("seed").value)
+  };
+}
+
+function badge(met) {
+  const b = el("span", { class: "badge " + (met ? "met" : "miss") });
+  b.appendChild(el("span", { class: "shape", "aria-hidden": "true", text: met ? "●" : "▲" }));
+  b.appendChild(el("span", { text: met ? "MET" : "MISSED" }));
+  return b;
+}
+
+function renderResult(doc) {
+  const host = document.getElementById("result");
+  host.textContent = "";
+
+  const box = el("div", { class: "status " +
+    (doc.status === "solved" ? "ok" : doc.status === "proven_infeasible" ? "bad" : "warn") });
+
+  if (doc.status === "solved") {
+    box.appendChild(el("h3", { text: "Solved" }));
+    box.appendChild(el("p", { text:
+      "Every target you set is inside its tolerance on every day, and the frequency caps " +
+      "and variety limits hold. This is a good plan found by search. It is not proven to " +
+      "be the closest possible plan to your targets." }));
+  } else if (doc.status === "proven_infeasible") {
+    box.appendChild(el("h3", { text: "No plan can exist, and here is why" }));
+    for (const c of doc.certificates) {
+      const p = el("p");
+      p.appendChild(el("strong", { text: c.constraint + ": " }));
+      p.appendChild(document.createTextNode(c.message));
+      box.appendChild(p);
+    }
+  } else if (doc.status === "bad_request") {
+    box.appendChild(el("h3", { text: "The request cannot be read" }));
+    for (const p of doc.problems || []) box.appendChild(el("p", { text: p }));
+  } else {
+    box.appendChild(el("h3", { text: "No plan found, and nothing was proven" }));
+    box.appendChild(el("p", { text:
+      "The search did not find a plan meeting every constraint. No bound was broken, so " +
+      "this does not prove that no plan exists. The closest attempt missed:" }));
+    for (const m of (doc.notes.closest_misses || []).slice(0, 10)) {
+      box.appendChild(el("p", { text:
+        "day " + m.day + " " + (MACRO_LABELS[m.macro] || m.macro) + ": achieved " +
+        m.achieved + ", target " + m.target + ", outside the band by " + m.outside_band_by }));
+    }
+  }
+  host.appendChild(box);
+
+  if (!doc.plan) return;
+
+  for (let i = 0; i < doc.plan.days.length; i++) {
+    const day = doc.plan.days[i];
+    const per = doc.per_day[i];
+    const card = el("div", { class: "day" });
+    card.appendChild(el("div", { class: "day-head", text: "Day " + day.day }));
+    const body = el("div", { class: "day-body" });
+
+    const ul = el("ul", { class: "meals" });
+    for (const meal of day.meals) {
+      const text = meal.items.map(it =>
+        (it.servings > 1 ? it.servings + " x " : "") + it.food_id.replace(/_/g, " ")
+      ).join(" + ");
+      ul.appendChild(el("li", { text: "Meal " + meal.slot + ": " + text }));
+    }
+    body.appendChild(ul);
+
+    const scroller = el("div", { class: "scroll-x" });
+    const table = el("table");
+    const thead = el("thead");
+    const hr = el("tr");
+    for (const [t, cls] of [["Target", ""], ["You asked for", "num"], ["This day gives", "num"],
+                            ["Error", "num"], ["Allowed off by", "num"], ["Status", ""]]) {
+      hr.appendChild(el("th", { class: cls, text: t }));
+    }
+    thead.appendChild(hr);
+    table.appendChild(thead);
+    const tb = el("tbody");
+    for (const key of Object.keys(per.macros)) {
+      const m = per.macros[key];
+      const tr = el("tr");
+      tr.appendChild(el("td", { text: m.label }));
+      tr.appendChild(el("td", { class: "num", text: m.target.toFixed(1) }));
+      tr.appendChild(el("td", { class: "num", text: m.achieved.toFixed(1) }));
+      tr.appendChild(el("td", { class: "num",
+        text: (m.error >= 0 ? "+" : "") + m.error.toFixed(1) }));
+      tr.appendChild(el("td", { class: "num",
+        text: m.mode === "min" ? "≥ " + (m.target - m.allowance).toFixed(1)
+            : m.mode === "max" ? "≤ " + (m.target + m.allowance).toFixed(1)
+            : "±" + m.allowance.toFixed(1) }));
+      const td = el("td");
+      td.appendChild(badge(m.met));
+      tr.appendChild(td);
+      tb.appendChild(tr);
+    }
+    table.appendChild(tb);
+    scroller.appendChild(table);
+    body.appendChild(scroller);
+    card.appendChild(body);
+    host.appendChild(card);
+  }
+
+  const summary = el("div", { class: "panel" });
+  summary.appendChild(el("h3", { text: "Across the week", style: "margin-top:0" }));
+  summary.appendChild(el("p", { text:
+    "Distinct foods used: " + doc.distinct_foods +
+    " (minimum asked for: " + doc.instance.min_distinct_foods + ")." }));
+  const scroller = el("div", { class: "scroll-x" });
+  const t2 = el("table");
+  const th2 = el("thead");
+  const hr2 = el("tr");
+  for (const [t, cls] of [["Food", ""], ["Meal slots used", "num"], ["Cap", "num"], ["Status", ""]]) {
+    hr2.appendChild(el("th", { class: cls, text: t }));
+  }
+  th2.appendChild(hr2); t2.appendChild(th2);
+  const tb2 = el("tbody");
+  for (const food of Object.keys(doc.food_usage)) {
+    const used = doc.food_usage[food];
+    const cap = doc.instance.frequency_caps[food];
+    const tr = el("tr");
+    tr.appendChild(el("td", { text: food.replace(/_/g, " ") }));
+    tr.appendChild(el("td", { class: "num", text: String(used) }));
+    tr.appendChild(el("td", { class: "num", text: cap === undefined ? "none" : String(cap) }));
+    const td = el("td");
+    td.appendChild(badge(cap === undefined || used <= cap));
+    tr.appendChild(td);
+    tb2.appendChild(tr);
+  }
+  t2.appendChild(tb2);
+  scroller.appendChild(t2);
+  summary.appendChild(scroller);
+
+  let worstLabel = "", worst = 0;
+  for (const k of Object.keys(doc.meal_repeats)) {
+    if (doc.meal_repeats[k] > worst) { worst = doc.meal_repeats[k]; worstLabel = k; }
+  }
+  summary.appendChild(el("p", { text:
+    "Most repeated meal: " + worstLabel + ", used " + worst + " time(s), limit " +
+    doc.instance.max_meal_repeats + "." }));
+  summary.appendChild(el("p", { class: "sub", text:
+    "These totals are estimates from reference food composition values. Your actual food " +
+    "will differ. Nothing here is advice about what you should eat." }));
+  host.appendChild(summary);
+}
+
+function runSolve() {
+  const t0 = performance.now();
+  const spec = readSpec();
+  const result = solve(spec);
+  const doc = buildDocument(result);
+  window.__macroSolverDoc = doc;
+  window.__macroSolverSpec = spec;
+  renderResult(doc);
+  document.getElementById("timing").textContent =
+    "solved in " + Math.round(performance.now() - t0) + " ms";
+  return doc;
+}
+
+function applyTheme(name) {
+  if (name) document.documentElement.setAttribute("data-theme", name);
+  else document.documentElement.removeAttribute("data-theme");
+}
+
+function init() {
+  renderTargetControls();
+  renderPantryControls();
+  renderFoodTable();
+  document.getElementById("solve").addEventListener("click", runSolve);
+  document.getElementById("reset").addEventListener("click", function () {
+    renderTargetControls();
+    renderPantryControls();
+    document.getElementById("result").textContent = "";
+    document.getElementById("timing").textContent = "";
+  });
+  document.getElementById("theme-toggle").addEventListener("click", function () {
+    const cur = document.documentElement.getAttribute("data-theme");
+    const dark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (!cur) applyTheme(dark ? "light" : "dark");
+    else applyTheme(cur === "dark" ? "light" : "dark");
+  });
+  runSolve();
+}
+
+/* Exposed for the browser check in browser/check_page.js, which feeds the page the
+   same instance the Python side solves and runs the same independent checker over
+   whatever comes back. */
+window.macroSolver = {
+  solve: solve,
+  buildDocument: buildDocument,
+  solveSpec: function (spec) { return buildDocument(solve(spec)); },
+  runSolve: runSolve,
+  readSpec: readSpec,
+  foodTable: FOOD_TABLE
+};
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
+} else {
+  init();
+}
+</script>
+</body>
+</html>
