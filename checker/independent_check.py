@@ -173,8 +173,14 @@ def run(doc, food_table_path, find: Findings):
         recomputed.append(totals)
 
     # Macro targets, recomputed from the food table rather than trusted.
-    for idx, spec_day in enumerate(doc["per_day"]):
-        totals = recomputed[idx]
+    per_day_report = doc.get("per_day", [])
+    find.check(
+        len(per_day_report) == len(recomputed),
+        f"the report covers {len(per_day_report)} days but the plan has "
+        f"{len(recomputed)}",
+    )
+    for idx, totals in enumerate(recomputed):
+        spec_day = per_day_report[idx] if idx < len(per_day_report) else None
         for key, spec in inst["targets"].items():
             lo, hi, allowance = accepted_window(spec)
             got = totals.get(key, 0.0)
@@ -185,6 +191,8 @@ def run(doc, food_table_path, find: Findings):
                 f"[{'-inf' if lo is None else f'{lo:.3f}'}, "
                 f"{'+inf' if hi is None else f'{hi:.3f}'}], outside it by {miss:.3f}",
             )
+            if spec_day is None:
+                continue
             reported = spec_day["macros"].get(key)
             if find.check(
                 reported is not None,
