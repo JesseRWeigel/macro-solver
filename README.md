@@ -416,5 +416,5 @@ scanned 37 tracked files as bytes: no credential-shaped strings, no absolute hom
   ok    README states: not proven
 
 macro-solver verify: ALL CHECKS PASSED
-repo: ~/Projects/thousand/projects/macro-solver
+repo: <repo>/macro-solver
 ```

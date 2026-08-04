@@ -141,7 +141,7 @@ echo "7. the page, in a real browser"
 PW=""
 for cand in "${MACRO_SOLVER_PLAYWRIGHT:-}" "${PLAYWRIGHT_CORE:-}" \
             "$PWD/node_modules/playwright-core" \
-            "$HOME/Projects/thousand/projects/a11y-sweep/node_modules/playwright-core" \
+            "$HOME/<repo>/a11y-sweep/node_modules/playwright-core" \
             "../a11y-sweep/node_modules/playwright-core"; do
   [ -n "$cand" ] && [ -d "$cand" ] && { PW="$cand"; break; }
 done
